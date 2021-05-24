@@ -30,6 +30,7 @@ function App() {
         setIsPopupOrderDetailsOpened(false);
       }
     }
+
     document.addEventListener("keydown", closePopupByEsc);
 
     return () => document.removeEventListener("keydown", closePopupByEsc);

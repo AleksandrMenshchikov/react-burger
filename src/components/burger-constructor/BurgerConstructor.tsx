@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import styles from "./BurgerConstructor.module.css";
 import {
   CurrencyIcon,
@@ -27,6 +28,24 @@ function BurgerConstructor(props: any) {
           <LockIcon type="secondary" />
         </li>
         <div className={styles.listScrolle}>
+          <li className={styles.listItem}>
+            <DragIcon type="primary" />
+            <div className={styles.listItemRightSide}>
+              <img
+                src="https://code.s3.yandex.net/react/code/sauce-03-mobile.png"
+                alt="Фото ингредиента"
+                className={styles.img}
+              />
+              <p className="text text_type_main-default">
+                Соус традиционный галактический
+              </p>
+              <div className={styles.price}>
+                <span className="text text_type_digits-default mr-2">30</span>
+                <CurrencyIcon type="primary" />
+              </div>
+              <button type="button" className={styles.delete} />
+            </div>
+          </li>
           <li className={styles.listItem}>
             <DragIcon type="primary" />
             <div className={styles.listItemRightSide}>
@@ -117,5 +136,9 @@ function BurgerConstructor(props: any) {
     </div>
   );
 }
+
+BurgerConstructor.propTypes = {
+  onHandleButtonOrderClick: PropTypes.func,
+};
 
 export default BurgerConstructor;

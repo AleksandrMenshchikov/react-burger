@@ -39,7 +39,7 @@
 
 .container {
   overflow-y: auto;
-  max-height: calc(100vh - 88px - 155px);
+  max-height: calc(100vh - 115px - 40px - 88px);
   scroll-behavior: smooth;
 }
 

@@ -13,8 +13,8 @@ body #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  max-height: 100vh;
   align-items: center;
   color: #f2f2f3;
-  max-height: 100vh;
-  overflow-y: hidden;
+  
 }
