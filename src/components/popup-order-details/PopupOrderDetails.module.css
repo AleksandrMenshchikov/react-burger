@@ -1,0 +1,103 @@
+.popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.2s;
+}
+
+.popup_active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.popup__inner {
+  width: 100%;
+  max-width: 720px;
+  background-color: #131316;
+  border-radius: 40px;
+  border: 1px solid rgba(76, 76, 255, 0.2);
+  box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04),
+    0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04),
+    0px 0px 1px rgba(0, 0, 0, 0.04);
+  position: relative;
+}
+
+.buttonContainer {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+}
+
+.button {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  background-color: #f2f2f3;
+  height: 2px;
+  border-radius: 2px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  transform-origin: 0 0;
+  transition: all 0.2s;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  background-color: #f2f2f3;
+  height: 2px;
+  border-radius: 2px;
+  transform: rotate(-45deg) translate(-50%, -50%);
+  transform-origin: 0 0;
+  transition: all 0.2s;
+}
+
+.button:hover::before {
+  opacity: 0.8;
+}
+
+.button:hover::after {
+  opacity: 0.8;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.digit {
+  margin-top: 125px;
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.checked {
+  width: 110px;
+  height: 110px;
+  background-image: url("https://s3-alpha-sig.figma.com/img/4683/db1e/086c197d79d516cb9b72c157512f8436?Expires=1623024000&Signature=VD4vzC2jKSWYXG7IdtPbLKk0wOCqtvTyWbr-7P~5u0BcJ2bOUKEl1XgvOVRnyKkbVwsdQE1uJ4ZyQxf2xeLquuiz-~0iarc2jnttBdDPm0KYk6nVypXpBVE8PH4JBq-qWuILgYu4nar1FHdbfUR8J2zEM5XbUWkhKh6Z9wguke2pgEKT6CVmgHG32dz5WU2mgSR9ka2IQIkS~VN1Wfk51Bh5QG3c2oAvhbHrIBjSwSbhTvDidQLLNPTl2blrgPKzC4-rw2kYUoPm6qflx9A6-mAs2uas6WVJWphNTy6K1uUElju~4--vALmu-aSr9H7EmUI07QayaUVrr64GmCDBMg__&Key-Pair-Id=APKAINTVSUGEWH5XD5UA");
+  background-size: cover;
+}

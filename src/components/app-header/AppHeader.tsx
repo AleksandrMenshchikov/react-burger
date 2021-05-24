@@ -201,7 +201,7 @@ export class AppHeader extends Component<any, any> {
                 className={`${styles.navLink} ${styles.navLink_logo}`}
                 onClick={this.handleLogoLinkClick}
               >
-                <div className={`${styles.logo} pl-5 pr-5`}></div>
+                <div className={`${styles.logo} pl-5 pr-5`} />
               </NavLink>
             </li>
             <li className={`${styles.listItem} ${styles.listItem_profile}`}>

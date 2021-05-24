@@ -1,0 +1,72 @@
+.tabContainer {
+  height: 56px;
+  width: 100%;
+  display: flex;
+  background-color: #1c1c21;
+}
+
+.list {
+  padding: 0 16px;
+  margin: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 24px;
+  row-gap: 32px;
+}
+
+.listItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-height: 224px;
+}
+
+.listItem__text {
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 48px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  overflow-y: auto;
+  max-height: calc(100vh - 88px - 155px);
+  scroll-behavior: smooth;
+}
+
+.title {
+  padding-top: 40px;
+  margin-top: 0;
+}
+
+.button {
+  width: 100px;
+  height: 40px;
+  padding: 0;
+  background-color: transparent;
+  border: 1px solid #4c4cff;
+  color: #4c4cff;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-radius: 40px;
+}
+
+.button:hover {
+  opacity: 0.8;
+}
+
+.burgerIngredients {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
