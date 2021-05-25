@@ -14,7 +14,7 @@ function PopupBurgerIngredients(props: any) {
       onClick={props.onHandlePopupBurgerIngredientsCloseClick}
     >
       <div className={`${styles.popup__inner}`}>
-        <div className={`${styles.titleContainer} pt-10 pr-10 pl-10 `}>
+        <div className={`${styles.titleContainer} pt-6 pr-10 pl-10 `}>
           <h3 className="text text_type_main-large">Детали ингредиента</h3>
           <button type="button" className={styles.button} />
         </div>
