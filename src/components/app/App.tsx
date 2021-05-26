@@ -10,7 +10,7 @@ import stylesBurgerIngredients from "../burger-ingredients/BurgerIngredients.mod
 import stylesPopupOrderDetails from "../popup-order-details/PopupOrderDetails.module.css";
 import data from "../../utils/data";
 
-function App() {
+const App = React.memo(function App() {
   const [idBurgerIngredients, setIdBurgerIngredients] = React.useState(
     data[0]._id
   );
@@ -19,9 +19,10 @@ function App() {
   const [isPopupOrderDetailsOpened, setIsPopupOrderDetailsOpened] =
     React.useState(false);
 
-  const dataForPopupBurgerIngredients = data.filter(
-    (item) => item._id === idBurgerIngredients
-  )[0];
+  const dataForPopupBurgerIngredients = React.useMemo(
+    () => data.filter((item) => item._id === idBurgerIngredients)[0],
+    [idBurgerIngredients]
+  );
 
   React.useEffect(() => {
     function closePopupByEsc(e) {
@@ -36,34 +37,34 @@ function App() {
     return () => document.removeEventListener("keydown", closePopupByEsc);
   }, []);
 
-  function burgerIngredientsClick(e) {
+  const burgerIngredientsClick = React.useCallback((e) => {
     setIdBurgerIngredients(
       e.target.closest(`.${stylesBurgerIngredients.burgerIngredients}`).id
     );
     setIsPopupBurgerIngredientsOpened(true);
-  }
+  }, []);
 
-  function handlePopupBurgerIngredientsCloseClick(e) {
+  const handlePopupBurgerIngredientsCloseClick = React.useCallback((e) => {
     if (
       e.target.classList.contains(stylesPopupBurgerIngredients.popup) ||
       e.target.classList.contains(stylesPopupBurgerIngredients.button)
     ) {
       setIsPopupBurgerIngredientsOpened(false);
     }
-  }
+  }, []);
 
-  function handlePopupOrderDetailsCloseClick(e) {
+  const handlePopupOrderDetailsCloseClick = React.useCallback((e) => {
     if (
       e.target.classList.contains(stylesPopupOrderDetails.popup) ||
       e.target.classList.contains(stylesPopupOrderDetails.button)
     ) {
       setIsPopupOrderDetailsOpened(false);
     }
-  }
+  }, []);
 
-  function handleButtonOrderClick() {
+  const handleButtonOrderClick = React.useCallback(() => {
     setIsPopupOrderDetailsOpened(true);
-  }
+  }, []);
 
   return (
     <>
@@ -89,6 +90,6 @@ function App() {
       />
     </>
   );
-}
+});
 
 export default App;

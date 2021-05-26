@@ -73,4 +73,4 @@ function PopupBurgerIngredients(props: any) {
   );
 }
 
-export default PopupBurgerIngredients;
+export default React.memo(PopupBurgerIngredients);

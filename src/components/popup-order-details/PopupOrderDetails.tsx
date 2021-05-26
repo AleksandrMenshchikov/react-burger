@@ -33,4 +33,4 @@ function PopupOrderDetails(props: any) {
   );
 }
 
-export default PopupOrderDetails;
+export default React.memo(PopupOrderDetails);

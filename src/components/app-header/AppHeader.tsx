@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styles from "./AppHeader.module.css";
 import {
   BurgerIcon,
@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
 
-export class AppHeader extends Component<any, any> {
+export class AppHeader extends PureComponent<any, any> {
   constructor(props: any) {
     super(props);
     this.state = {
