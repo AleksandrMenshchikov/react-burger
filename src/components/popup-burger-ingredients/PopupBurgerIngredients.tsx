@@ -1,10 +1,27 @@
 import React from "react";
 import styles from "./PopupBurgerIngredients.module.css";
+import spinWhite from "../../images/spin-white.svg";
 
 function PopupBurgerIngredients(props: any) {
   if (!props.data) {
     return null;
   }
+
+  const [showSpiner, setShowSpiner] = React.useState(false);
+
+  React.useEffect(() => {
+    let timer;
+    if (!props.isPopupBurgerIngredientsOpened) {
+      timer = setTimeout(() => {
+        setShowSpiner(true);
+      }, 200);
+    } else {
+      clearTimeout(timer);
+      setShowSpiner(false);
+    }
+
+    return () => clearTimeout(timer);
+  }, [props.isPopupBurgerIngredientsOpened]);
 
   return (
     <div
@@ -18,11 +35,14 @@ function PopupBurgerIngredients(props: any) {
           <h3 className="text text_type_main-large">Детали ингредиента</h3>
           <button type="button" className={styles.button} />
         </div>
-        <img
-          src={props.data.image_large}
-          alt="Фото ингредиента"
-          className={styles.img}
-        />
+        <div className={styles.imgContainer}>
+          <img
+            src={showSpiner ? spinWhite : props.data.image_large}
+            alt="Фото ингредиента"
+            className={styles.img}
+          />
+        </div>
+
         <p className={`${styles.name} text text_type_main-medium pt-4 pb-8`}>
           {props.data.name}
         </p>
