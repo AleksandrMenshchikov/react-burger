@@ -10,7 +10,7 @@ import stylesBurgerIngredients from "../burger-ingredients/BurgerIngredients.mod
 import stylesPopupOrderDetails from "../popup-order-details/PopupOrderDetails.module.css";
 import data from "../../utils/data";
 
-const App = React.memo(function App() {
+function App() {
   const [idBurgerIngredients, setIdBurgerIngredients] = React.useState(
     data[0]._id
   );
@@ -90,6 +90,6 @@ const App = React.memo(function App() {
       />
     </>
   );
-});
+}
 
 export default App;
