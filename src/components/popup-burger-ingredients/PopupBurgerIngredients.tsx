@@ -19,10 +19,10 @@ function PopupBurgerIngredients(props: any) {
       clearTimeout(timer);
       setShowSpiner(false);
     }
-
+    
     return () => clearTimeout(timer);
   }, [props.isPopupBurgerIngredientsOpened]);
-
+  
   return (
     <div
       className={`${styles.popup} ${

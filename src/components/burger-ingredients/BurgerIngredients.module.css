@@ -38,9 +38,23 @@
 }
 
 .container {
-  overflow-y: auto;
+  overflow-y: scroll;
   max-height: calc(100vh - 115px - 40px - 88px);
   scroll-behavior: smooth;
+  scrollbar-width: thin;          /* "auto" или "thin"  */
+  scrollbar-color: #8585AD #1C1C21;
+}
+
+.container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+  background: #1C1C21; 
+}
+ 
+.container::-webkit-scrollbar-thumb {
+  background: #8585AD; 
 }
 
 .title {
