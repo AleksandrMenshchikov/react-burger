@@ -17,6 +17,7 @@ const root = document.querySelector("#root");
 function App() {
   const [idBurgerIngredients, setIdBurgerIngredients] = React.useState(null);
   const [data, setData] = React.useState([]);
+  const [dataBurgerConstructor, setDataBurgerConstructor] = React.useState([]);
   const [isError, setIsError] = React.useState(false);
   const [isPopupBurgerIngredientsOpened, setIsPopupBurgerIngredientsOpened] =
     React.useState(false);
@@ -56,10 +57,17 @@ function App() {
 
   const burgerIngredientsClick = React.useCallback((e) => {
     setIdBurgerIngredients(
-      e.target.closest(`.${stylesBurgerIngredients.burgerIngredients}`).id
+      e.target.closest(`.${stylesBurgerIngredients.listItem}`).id
     );
     setIsPopupBurgerIngredientsOpened(true);
   }, []);
+
+  const handleAddIngredientsButtonClick = React.useCallback(
+    (foundData) => {
+      setDataBurgerConstructor([...dataBurgerConstructor, foundData]);
+    },
+    [dataBurgerConstructor]
+  );
 
   const handlePopupBurgerIngredientsCloseClick = React.useCallback((e) => {
     if (
@@ -82,6 +90,16 @@ function App() {
   const handleButtonOrderClick = React.useCallback(() => {
     setIsPopupOrderDetailsOpened(true);
   }, []);
+
+  const handleButtonDeleteBurgerElementClick = React.useCallback(
+    (index = 0) => {
+      const filteredData = dataBurgerConstructor.filter(
+        (item, i) => i !== Number(index)
+      );
+      setDataBurgerConstructor(filteredData);
+    },
+    [dataBurgerConstructor]
+  );
 
   if (data.length === 0) {
     return ReactDOM.createPortal(
@@ -112,10 +130,17 @@ function App() {
             <BurgerIngridients
               data={data}
               onBurgerIngredientsClick={burgerIngredientsClick}
+              onHandleAddIngredientsButtonClick={
+                handleAddIngredientsButtonClick
+              }
             />
           )}
           <BurgerConstructor
             onHandleButtonOrderClick={handleButtonOrderClick}
+            data={dataBurgerConstructor}
+            onHandleButtonDeleteBurgerElementClick={
+              handleButtonDeleteBurgerElementClick
+            }
           />
         </main>
 
