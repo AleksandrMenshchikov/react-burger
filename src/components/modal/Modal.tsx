@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styles from "./Modal.module.css";
 
 function Modal(props: any) {
@@ -17,5 +18,10 @@ function Modal(props: any) {
     </div>
   );
 }
+
+Modal.propTypes = {
+  nameComponentActive: PropTypes.string,
+  children: PropTypes.element,
+};
 
 export default React.memo(Modal);

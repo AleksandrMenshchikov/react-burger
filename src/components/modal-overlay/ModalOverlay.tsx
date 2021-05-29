@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
 import styles from "./ModalOverlay.module.css";
 
 const modalRoot = document.querySelector("#modal-root");
@@ -14,5 +15,10 @@ function ModalOverlay(props) {
     modalRoot
   );
 }
+
+ModalOverlay.propTypes = {
+  isModalOverlayOpened: PropTypes.bool,
+  children: PropTypes.element,
+};
 
 export default React.memo(ModalOverlay);
