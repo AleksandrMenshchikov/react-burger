@@ -38,7 +38,6 @@ function BurgerConstructor(props: any) {
     const index = id.slice(24);
     props.onHandleButtonDeleteBurgerElementClick(index);
   }
-  console.log(data);
 
   let totalPrice = 0;
 

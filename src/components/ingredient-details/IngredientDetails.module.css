@@ -1,0 +1,36 @@
+.imgContainer {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img {
+  padding: 0 20px;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  max-width: 520px;
+  column-gap: 20px;
+  padding: 0;
+  list-style: none;
+  margin-bottom: 20px;
+  margin-top: 0;
+}
+
+.listItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #8585ad;
+}
+
+.listItem__text {
+  margin: 0;
+  padding-bottom: 8px;
+}
