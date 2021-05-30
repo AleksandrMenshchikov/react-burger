@@ -1,69 +1,73 @@
-import React, { useEffect } from "react";
-import PropTypes, { func } from "prop-types";
-import styles from "./BurgerIngredients.module.css";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import {
   Tab,
   CurrencyIcon,
   Counter,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './BurgerIngredients.module.css';
 
-function BurgerIngredients(props: any) {
-  const [current, setCurrent] = React.useState("Булки");
+function BurgerIngredients({
+  data,
+  onHandleAddIngredientsButtonClick,
+  onBurgerIngredientsClick,
+}: any) {
+  const [current, setCurrent] = React.useState('Булки');
   const [flagOfTabClick, setFlagOfTabClick] = React.useState(false);
-  const [text, setText] = React.useState("Булки");
-  const [tabContainerBottomCoordinate, setTabContainerBottomCoordinate] =
-    React.useState(0);
+  const [text, setText] = React.useState('Булки');
+  const [tabContainerBottomCoordinate, setTabContainerBottomCoordinate] = React.useState(0);
   const [bunsTopCoordinate, setBunsTopCoordinate] = React.useState(0);
   const [saucesTopCoordinate, setSaucesTopCoordinate] = React.useState(0);
   const [mainsTopCoordinate, setMainsTopCoordinate] = React.useState(0);
 
   function handleTabClick(e) {
-    const textElem = e.target.closest("div").children[0].textContent;
+    const textElem = e.target.closest('div').children[0].textContent;
     setText(textElem);
     setFlagOfTabClick(!flagOfTabClick);
   }
-  
+
   function handleButtonClick(e) {
     const idBurgerIngredients = e.target.closest(
-      `.${styles.listItem}`
+      `.${styles.listItem}`,
     ).id;
-    const foundData = props.data.find((item) => item._id === idBurgerIngredients);
-    props.onHandleAddIngredientsButtonClick(foundData);
+    const foundData = data.find((item) => item._id === idBurgerIngredients);
+    onHandleAddIngredientsButtonClick(foundData);
   }
 
   useEffect(() => {
-    const tabContainerBottomCoordinate = document
-      .querySelector("#tabContainer")
+    const tabContainerBottom = document
+      .querySelector('#tabContainer')
       .getBoundingClientRect().bottom;
-    setTabContainerBottomCoordinate(tabContainerBottomCoordinate);
+    setTabContainerBottomCoordinate(tabContainerBottom);
 
-    const bunsTopCoordinate = document
-      .querySelector("#buns")
+    const bunsTop = document
+      .querySelector('#buns')
       .getBoundingClientRect().top;
-    setBunsTopCoordinate(bunsTopCoordinate);
+    setBunsTopCoordinate(bunsTop);
 
-    const saucesTopCoordinate = document
-      .querySelector("#sauces")
+    const saucesTop = document
+      .querySelector('#sauces')
       .getBoundingClientRect().top;
-    setSaucesTopCoordinate(saucesTopCoordinate);
+    setSaucesTopCoordinate(saucesTop);
 
-    const mainsTopCoordinate = document
-      .querySelector("#mains")
+    const mainsTop = document
+      .querySelector('#mains')
       .getBoundingClientRect().top;
-    setMainsTopCoordinate(mainsTopCoordinate);
+    setMainsTopCoordinate(mainsTop);
   }, []);
 
   useEffect(() => {
-    const container = document.querySelector("#container");
+    const container = document.querySelector('#container');
 
-    if (text === "Булки") {
+    if (text === 'Булки') {
       container.scrollTo(0, bunsTopCoordinate - tabContainerBottomCoordinate);
-    } else if (text === "Соусы") {
+    } else if (text === 'Соусы') {
       container.scrollTo(0, saucesTopCoordinate - tabContainerBottomCoordinate);
-    } else if (text === "Начинки") {
+    } else if (text === 'Начинки') {
       container.scrollTo(0, mainsTopCoordinate - tabContainerBottomCoordinate);
     }
-  }, [flagOfTabClick]);
+  }, [flagOfTabClick, bunsTopCoordinate, tabContainerBottomCoordinate,
+    saucesTopCoordinate, mainsTopCoordinate, text]);
 
   return (
     <div>
@@ -72,29 +76,29 @@ function BurgerIngredients(props: any) {
           Соберите бургер
         </h2>
         <div id="tabContainer" className={styles.tabContainer}>
-          <div onClick={handleTabClick}>
+          <div onClick={handleTabClick} role="button" tabIndex={0} onKeyDown={handleTabClick}>
             <Tab
               value="Булки"
-              active={current === "Булки"}
+              active={current === 'Булки'}
               onClick={setCurrent}
             >
               Булки
             </Tab>
           </div>
-          <div onClick={handleTabClick}>
+          <div onClick={handleTabClick} role="button" tabIndex={0} onKeyDown={handleTabClick}>
             <Tab
               value="Соусы"
-              active={current === "Соусы"}
+              active={current === 'Соусы'}
               onClick={setCurrent}
             >
               Соусы
             </Tab>
           </div>
-          <div onClick={handleTabClick}>
-            {" "}
+          <div onClick={handleTabClick} role="button" tabIndex={0} onKeyDown={handleTabClick}>
+            {' '}
             <Tab
               value="Начинки"
-              active={current === "Начинки"}
+              active={current === 'Начинки'}
               onClick={setCurrent}
             >
               Начинки
@@ -103,25 +107,28 @@ function BurgerIngredients(props: any) {
         </div>
       </div>
       <div id="container" className={`${styles.container} "mt-10 mb-10"`}>
-        {!!props.data.length &&
-          props.data.some((item: any) => item.type === "bun") && (
+        {!!data.length
+          && data.some((item: any) => item.type === 'bun') && (
             <h3
               id="buns"
               className={`${styles.title} "text text_type_main-medium mb-6"`}
             >
               Булки
             </h3>
-          )}
+        )}
         <ul className={styles.list}>
-          {!!props.data.length &&
-            props.data.some((item: any) => item.type === "bun") &&
-            props.data.map((item: any) => {
-              if (item.type === "bun") {
+          {!!data.length
+            && data.some((item: any) => item.type === 'bun')
+            && data.map((item: any) => {
+              if (item.type === 'bun') {
                 return (
                   <li className={styles.listItem} id={item._id} key={item._id}>
                     <div
                       className={styles.burgerIngredients}
-                      onClick={props.onBurgerIngredientsClick}
+                      onClick={onBurgerIngredientsClick}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={onBurgerIngredientsClick}
                     >
                       <Counter count={1} size="default" />
                       <img
@@ -131,7 +138,7 @@ function BurgerIngredients(props: any) {
                       />
                       <div className={`${styles.price} pt-1 pb-1`}>
                         <span className="text text_type_digits-default pr-2">
-                          {new Intl.NumberFormat("ru").format(item.price)}
+                          {new Intl.NumberFormat('ru').format(item.price)}
                         </span>
                         <CurrencyIcon type="primary" />
                       </div>
@@ -151,27 +158,31 @@ function BurgerIngredients(props: any) {
                   </li>
                 );
               }
+              return null;
             })}
         </ul>
-        {!!props.data.length &&
-          props.data.some((item: any) => item.type === "sauce") && (
+        {!!data.length
+          && data.some((item: any) => item.type === 'sauce') && (
             <h3
               id="sauces"
               className={`${styles.title} "text text_type_main-medium mb-6"`}
             >
               Соусы
             </h3>
-          )}
+        )}
         <ul className={styles.list}>
-          {!!props.data.length &&
-            props.data.some((item: any) => item.type === "sauce") &&
-            props.data.map((item: any) => {
-              if (item.type === "sauce") {
+          {!!data.length
+            && data.some((item: any) => item.type === 'sauce')
+            && data.map((item: any) => {
+              if (item.type === 'sauce') {
                 return (
                   <li className={styles.listItem} id={item._id} key={item._id}>
                     <div
                       className={styles.burgerIngredients}
-                      onClick={props.onBurgerIngredientsClick}
+                      onClick={onBurgerIngredientsClick}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={onBurgerIngredientsClick}
                     >
                       <Counter count={1} size="default" />
                       <img
@@ -181,7 +192,7 @@ function BurgerIngredients(props: any) {
                       />
                       <div className={`${styles.price} pt-1 pb-1`}>
                         <span className="text text_type_digits-default pr-2">
-                          {new Intl.NumberFormat("ru").format(item.price)}
+                          {new Intl.NumberFormat('ru').format(item.price)}
                         </span>
                         <CurrencyIcon type="primary" />
                       </div>
@@ -201,27 +212,31 @@ function BurgerIngredients(props: any) {
                   </li>
                 );
               }
+              return null;
             })}
         </ul>
-        {!!props.data.length &&
-          props.data.some((item: any) => item.type === "main") && (
+        {!!data.length
+          && data.some((item: any) => item.type === 'main') && (
             <h3
               id="mains"
               className={`${styles.title} "text text_type_main-medium mb-6"`}
             >
               Начинки
             </h3>
-          )}
+        )}
         <ul className={styles.list}>
-          {!!props.data.length &&
-            props.data.some((item: any) => item.type === "main") &&
-            props.data.map((item: any) => {
-              if (item.type === "main") {
+          {!!data.length
+            && data.some((item: any) => item.type === 'main')
+            && data.map((item: any) => {
+              if (item.type === 'main') {
                 return (
                   <li className={styles.listItem} id={item._id} key={item._id}>
                     <div
                       className={styles.burgerIngredients}
-                      onClick={props.onBurgerIngredientsClick}
+                      onClick={onBurgerIngredientsClick}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={onBurgerIngredientsClick}
                     >
                       <Counter count={1} size="default" />
                       <img
@@ -231,7 +246,7 @@ function BurgerIngredients(props: any) {
                       />
                       <div className={`${styles.price} pt-1 pb-1`}>
                         <span className="text text_type_digits-default pr-2">
-                          {new Intl.NumberFormat("ru").format(item.price)}
+                          {new Intl.NumberFormat('ru').format(item.price)}
                         </span>
                         <CurrencyIcon type="primary" />
                       </div>
@@ -251,6 +266,7 @@ function BurgerIngredients(props: any) {
                   </li>
                 );
               }
+              return null;
             })}
         </ul>
       </div>
@@ -273,10 +289,10 @@ BurgerIngredients.propTypes = {
       image_mobile: PropTypes.string,
       image_large: PropTypes.string,
       __v: PropTypes.number,
-    })
-  ),
-  onBurgerIngredientsClick: PropTypes.func,
-  onHandleAddIngredientsButtonClick: PropTypes.func,
+    }),
+  ).isRequired,
+  onBurgerIngredientsClick: PropTypes.func.isRequired,
+  onHandleAddIngredientsButtonClick: PropTypes.func.isRequired,
 };
 
 export default React.memo(BurgerIngredients);
