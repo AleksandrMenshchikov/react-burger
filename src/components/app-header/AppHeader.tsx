@@ -7,7 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
 
-function AppHeader(props: any) {
+function AppHeader() {
   const [state, setState] = React.useState({
     isConstructorLinkHover: false,
     isConstructorLinkActive: true,

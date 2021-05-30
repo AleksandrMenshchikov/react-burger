@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { func } from "prop-types";
 import styles from "./BurgerIngredients.module.css";
 import {
   Tab,
@@ -21,6 +21,14 @@ function BurgerIngredients(props: any) {
     const textElem = e.target.closest("div").children[0].textContent;
     setText(textElem);
     setFlagOfTabClick(!flagOfTabClick);
+  }
+  
+  function handleButtonClick(e) {
+    const idBurgerIngredients = e.target.closest(
+      `.${styles.listItem}`
+    ).id;
+    const foundData = props.data.find((item) => item._id === idBurgerIngredients);
+    props.onHandleAddIngredientsButtonClick(foundData);
   }
 
   useEffect(() => {
@@ -110,9 +118,8 @@ function BurgerIngredients(props: any) {
             props.data.map((item: any) => {
               if (item.type === "bun") {
                 return (
-                  <li className={styles.listItem} key={item._id}>
+                  <li className={styles.listItem} id={item._id} key={item._id}>
                     <div
-                      id={item._id}
                       className={styles.burgerIngredients}
                       onClick={props.onBurgerIngredientsClick}
                     >
@@ -137,6 +144,7 @@ function BurgerIngredients(props: any) {
                     <button
                       type="button"
                       className={`${styles.button} text text_type_main-small mb-2 mt-2`}
+                      onClick={handleButtonClick}
                     >
                       Добавить
                     </button>
@@ -160,9 +168,8 @@ function BurgerIngredients(props: any) {
             props.data.map((item: any) => {
               if (item.type === "sauce") {
                 return (
-                  <li className={styles.listItem} key={item._id}>
+                  <li className={styles.listItem} id={item._id} key={item._id}>
                     <div
-                      id={item._id}
                       className={styles.burgerIngredients}
                       onClick={props.onBurgerIngredientsClick}
                     >
@@ -187,6 +194,7 @@ function BurgerIngredients(props: any) {
                     <button
                       type="button"
                       className={`${styles.button} text text_type_main-small mb-2 mt-2`}
+                      onClick={handleButtonClick}
                     >
                       Добавить
                     </button>
@@ -210,9 +218,8 @@ function BurgerIngredients(props: any) {
             props.data.map((item: any) => {
               if (item.type === "main") {
                 return (
-                  <li className={styles.listItem} key={item._id}>
+                  <li className={styles.listItem} id={item._id} key={item._id}>
                     <div
-                      id={item._id}
                       className={styles.burgerIngredients}
                       onClick={props.onBurgerIngredientsClick}
                     >
@@ -237,6 +244,7 @@ function BurgerIngredients(props: any) {
                     <button
                       type="button"
                       className={`${styles.button} text text_type_main-small mb-2 mt-2`}
+                      onClick={handleButtonClick}
                     >
                       Добавить
                     </button>
@@ -268,6 +276,7 @@ BurgerIngredients.propTypes = {
     })
   ),
   onBurgerIngredientsClick: PropTypes.func,
+  onHandleAddIngredientsButtonClick: PropTypes.func,
 };
 
 export default React.memo(BurgerIngredients);
