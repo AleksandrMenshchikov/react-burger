@@ -1,11 +1,11 @@
-import React from "react";
-import styles from "./AppHeader.module.css";
+import React from 'react';
 import {
   BurgerIcon,
   ListIcon,
   ProfileIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { NavLink } from "react-router-dom";
+} from '@ya.praktikum/react-developer-burger-ui-components';
+import { NavLink } from 'react-router-dom';
+import styles from './AppHeader.module.css';
 
 function AppHeader() {
   const [state, setState] = React.useState({
@@ -30,7 +30,7 @@ function AppHeader() {
       isConstructorLinkHover: false,
     });
   }
-  
+
   function handleConstructorLinkClick() {
     setState({
       ...state,
@@ -98,7 +98,7 @@ function AppHeader() {
   let isConstructorLinkActive;
   let isOrderLinkActive;
   let isProfileLinkActive;
-  
+
   if (state.isConstructorLinkActive || state.isConstructorLinkHover) {
     isConstructorLinkActive = true;
   } else {
@@ -138,7 +138,7 @@ function AppHeader() {
                 className={`pl-2 text text_type_main-default ${
                   isConstructorLinkActive
                     ? styles.text_color_active
-                    : "text_color_inactive"
+                    : 'text_color_inactive'
                 }`}
               >
                 Конструктор
@@ -162,7 +162,7 @@ function AppHeader() {
                 className={`pl-2 text text_type_main-default ${
                   isOrderLinkActive
                     ? styles.text_color_active
-                    : "text_color_inactive"
+                    : 'text_color_inactive'
                 }`}
               >
                 Лента заказов
@@ -195,7 +195,7 @@ function AppHeader() {
                 className={`pl-2 text text_type_main-default ${
                   isProfileLinkActive
                     ? styles.text_color_active
-                    : "text_color_inactive"
+                    : 'text_color_inactive'
                 }`}
               >
                 Личный кабинет

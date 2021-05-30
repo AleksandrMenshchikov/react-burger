@@ -1,5 +1,7 @@
 class Api {
-  constructor(options) {
+  _baseUrl: string;
+
+  constructor(options: { baseUrl: string; }) {
     this._baseUrl = options.baseUrl;
   }
 
@@ -7,12 +9,12 @@ class Api {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(new Error(`Ошибка: ${res.status}`));
   }
 
   _headers() {
     return {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
   }
 
@@ -24,5 +26,5 @@ class Api {
 }
 
 export const api = new Api({
-  baseUrl: "https://norma.nomoreparties.space/api/ingredients",
+  baseUrl: 'https://norma.nomoreparties.space/api/ingredients',
 });

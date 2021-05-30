@@ -1,18 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./IngredientDetails.module.css";
-import spinWhite from "../../images/spin-white.svg";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './IngredientDetails.module.css';
+import spinWhite from '../../images/spin-white.svg';
 
-function IngredientDetails(props: any) {
-  if (!props.data) {
-    return null;
-  }
-
+function IngredientDetails({ data, isModalOverlayOpened }: any) {
   const [showSpiner, setShowSpiner] = React.useState(false);
 
   React.useEffect(() => {
     let timer;
-    if (!props.isModalOverlayOpened) {
+    if (!isModalOverlayOpened) {
       timer = setTimeout(() => {
         setShowSpiner(true);
       }, 200);
@@ -22,19 +18,23 @@ function IngredientDetails(props: any) {
     }
 
     return () => clearTimeout(timer);
-  }, [props.isModalOverlayOpened]);
+  }, [isModalOverlayOpened]);
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>
       <div className={styles.imgContainer}>
         <img
-          src={showSpiner ? spinWhite : props.data.image_large}
+          src={showSpiner ? spinWhite : data.image_large}
           alt="Фото ингредиента"
           className={styles.img}
         />
       </div>
       <p className={`${styles.name} text text_type_main-medium pt-4 pb-8`}>
-        {props.data.name}
+        {data.name}
       </p>
       <ul className={styles.list}>
         <li className={styles.listItem}>
@@ -42,7 +42,7 @@ function IngredientDetails(props: any) {
             Калории,ккал
           </p>
           <span className="text text_type_digits-default">
-            {props.data.calories}
+            {data.calories}
           </span>
         </li>
         <li className={styles.listItem}>
@@ -50,7 +50,7 @@ function IngredientDetails(props: any) {
             Белки, г
           </p>
           <span className="text text_type_digits-default">
-            {props.data.proteins}
+            {data.proteins}
           </span>
         </li>
         <li className={styles.listItem}>
@@ -58,7 +58,7 @@ function IngredientDetails(props: any) {
             Жиры, г
           </p>
           <span className="text text_type_digits-default">
-            {props.data.fat}
+            {data.fat}
           </span>
         </li>
         <li className={styles.listItem}>
@@ -66,7 +66,7 @@ function IngredientDetails(props: any) {
             Углеводы, г
           </p>
           <span className="text text_type_digits-default">
-            {props.data.carbohydrates}
+            {data.carbohydrates}
           </span>
         </li>
       </ul>
@@ -88,8 +88,8 @@ IngredientDetails.propTypes = {
     image_mobile: PropTypes.string,
     image_large: PropTypes.string,
     __v: PropTypes.number,
-  }),
-  isModalOverlayOpened: PropTypes.bool,
+  }).isRequired,
+  isModalOverlayOpened: PropTypes.bool.isRequired,
 };
 
 export default React.memo(IngredientDetails);

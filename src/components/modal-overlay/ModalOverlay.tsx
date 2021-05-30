@@ -1,24 +1,24 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-import styles from "./ModalOverlay.module.css";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import styles from './ModalOverlay.module.css';
 
-const modalRoot = document.querySelector("#modal-root");
+const modalRoot = document.querySelector('#modal-root');
 
-function ModalOverlay(props) {
+function ModalOverlay({ isModalOverlayOpened, children }) {
   return ReactDOM.createPortal(
     <div
-      className={`${styles.modalOverlay} ${props.isModalOverlayOpened && styles.modalOverlay_active}`}
+      className={`${styles.modalOverlay} ${isModalOverlayOpened && styles.modalOverlay_active}`}
     >
-      {props.children}
+      {children}
     </div>,
-    modalRoot
+    modalRoot,
   );
 }
 
 ModalOverlay.propTypes = {
-  isModalOverlayOpened: PropTypes.bool,
-  children: PropTypes.element,
+  isModalOverlayOpened: PropTypes.bool.isRequired,
+  children: PropTypes.element.isRequired,
 };
 
 export default React.memo(ModalOverlay);

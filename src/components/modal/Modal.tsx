@@ -1,27 +1,31 @@
-import React from "react";
-import PropTypes from "prop-types";
-import styles from "./Modal.module.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './Modal.module.css';
 
-function Modal(props: any) {
+function Modal({ nameComponentActive, children }: any) {
   return (
     <div className={styles.modal}>
       <div className={styles.container}>
         <div className={styles.titleContainer}>
           <h3 className="text text_type_main-large">
-            {props.nameComponentActive === "BurgerIngredients" &&
-              "Детали ингредиента"}
+            {nameComponentActive === 'BurgerIngredients'
+              && 'Детали ингредиента'}
           </h3>
-          <button type="button" className={styles.button} />
+          <button type="button" className={styles.button} aria-label="Закрыть" />
         </div>
-        {props.children}
+        {children}
       </div>
     </div>
   );
 }
 
 Modal.propTypes = {
-  nameComponentActive: PropTypes.string,
+  nameComponentActive: PropTypes.string.isRequired,
   children: PropTypes.element,
+};
+
+Modal.defaultProps = {
+  children: null,
 };
 
 export default React.memo(Modal);
