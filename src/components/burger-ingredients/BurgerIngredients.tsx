@@ -9,7 +9,6 @@ import styles from './BurgerIngredients.module.css';
 
 function BurgerIngredients({
   data,
-  onHandleAddIngredientsButtonClick,
   onBurgerIngredientsClick,
 }: any) {
   const [current, setCurrent] = React.useState('Булки');
@@ -24,14 +23,6 @@ function BurgerIngredients({
     const textElem = e.target.closest('div').children[0].textContent;
     setText(textElem);
     setFlagOfTabClick(!flagOfTabClick);
-  }
-
-  function handleButtonClick(e) {
-    const idBurgerIngredients = e.target.closest(
-      `.${styles.listItem}`,
-    ).id;
-    const foundData = data.find((item) => item._id === idBurgerIngredients);
-    onHandleAddIngredientsButtonClick(foundData);
   }
 
   useEffect(() => {
@@ -148,13 +139,6 @@ function BurgerIngredients({
                         {item.name}
                       </h5>
                     </div>
-                    <button
-                      type="button"
-                      className={`${styles.button} text text_type_main-small mb-2 mt-2`}
-                      onClick={handleButtonClick}
-                    >
-                      Добавить
-                    </button>
                   </li>
                 );
               }
@@ -202,13 +186,6 @@ function BurgerIngredients({
                         {item.name}
                       </h5>
                     </div>
-                    <button
-                      type="button"
-                      className={`${styles.button} text text_type_main-small mb-2 mt-2`}
-                      onClick={handleButtonClick}
-                    >
-                      Добавить
-                    </button>
                   </li>
                 );
               }
@@ -256,13 +233,6 @@ function BurgerIngredients({
                         {item.name}
                       </h5>
                     </div>
-                    <button
-                      type="button"
-                      className={`${styles.button} text text_type_main-small mb-2 mt-2`}
-                      onClick={handleButtonClick}
-                    >
-                      Добавить
-                    </button>
                   </li>
                 );
               }
@@ -292,7 +262,6 @@ BurgerIngredients.propTypes = {
     }),
   ).isRequired,
   onBurgerIngredientsClick: PropTypes.func.isRequired,
-  onHandleAddIngredientsButtonClick: PropTypes.func.isRequired,
 };
 
 export default React.memo(BurgerIngredients);
