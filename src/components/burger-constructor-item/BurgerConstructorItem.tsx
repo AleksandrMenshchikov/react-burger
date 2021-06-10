@@ -1,11 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  CurrencyIcon,
-  LockIcon,
-  DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import styles from './IngredientItem.module.css';
+import { CurrencyIcon, LockIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import styles from './BurgerConstructorItem.module.css';
 
 function IngredientItem({ item, position }) {
   return (

@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  CurrencyIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientItem from '../ingredient-item/IngredientItem';
+import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import BurgerConstructorItem from '../burger-constructor-item/BurgerConstructorItem';
 import { DataContext } from '../../utils/appContext';
 import styles from './BurgerConstructor.module.css';
 
@@ -63,7 +60,7 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
       <ul className={styles.list}>
         {filteredData.length > 0 && filteredData.map((item) => {
           if (item.type === 'bun') {
-            return <IngredientItem item={item} position="top" key={item._id} />;
+            return <BurgerConstructorItem item={item} position="top" key={item._id} />;
           }
           return null;
         })}
@@ -71,7 +68,7 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
         <div className={styles.listScrolle}>
           {data.length > 0 && data.map((item) => {
             if (item.type !== 'bun') {
-              return <IngredientItem item={item} position="center" key={item._id} />;
+              return <BurgerConstructorItem item={item} position="center" key={item._id} />;
             }
             return null;
           })}
@@ -79,7 +76,7 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
 
         {filteredData.length > 0 && filteredData.map((item) => {
           if (item.type === 'bun') {
-            return <IngredientItem item={item} position="bottom" key={item._id} />;
+            return <BurgerConstructorItem item={item} position="bottom" key={item._id} />;
           }
           return null;
         })}

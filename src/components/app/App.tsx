@@ -9,7 +9,7 @@ import IngredientDetails from '../ingredient-details/IngredientDetails';
 import OrderDetails from '../order-details/OrderDetails';
 import PreloadModal from '../preload-modal/PreloadModal';
 import styles from './App.module.css';
-import stylesBurgerIngredients from '../burger-ingredients/BurgerIngredients.module.css';
+import stylesBurgerIngredientsItem from '../burger-ingredients-item/BurgerIngredientsItem.module.css';
 import stylesModalOverlay from '../modal-overlay/ModalOverlay.module.css';
 import stylesModal from '../modal/Modal.module.css';
 import { DataContext } from '../../utils/appContext';
@@ -78,7 +78,7 @@ function App(): JSX.Element {
 
   const burgerIngredientsClick = React.useCallback((e) => {
     setIdBurgerIngredients(
-      e.target.closest(`.${stylesBurgerIngredients.listItem}`).id,
+      e.target.closest(`.${stylesBurgerIngredientsItem.listItem}`).id,
     );
     setIsModalOverlayOpened(true);
     setNameComponentActive('BurgerIngredients');
