@@ -62,25 +62,10 @@
   margin-top: 0;
 }
 
-.button {
-  width: 100px;
-  height: 40px;
-  padding: 0;
-  background-color: transparent;
-  border: 1px solid #4c4cff;
-  color: #4c4cff;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 40px;
-}
-
-.button:hover {
-  opacity: 0.8;
-}
-
 .burgerIngredients {
   display: flex;
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  outline: none;
 }
