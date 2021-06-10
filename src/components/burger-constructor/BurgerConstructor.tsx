@@ -1,29 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  CurrencyIcon,
   Button,
-  DragIcon,
-  LockIcon,
+  CurrencyIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { dataContext } from '../../utils/appContext';
+import IngredientItem from '../ingredient-item/IngredientItem';
+import { DataContext } from '../../utils/appContext';
 import styles from './BurgerConstructor.module.css';
 
 const initialState = { totalPrice: 0 };
 
-function reducer(state, action) {
+function reducer(state = initialState, action) {
   switch (action.type) {
     case 'reduce':
-      return { totalPrice: action.payload };
+      return {
+        ...state,
+        totalPrice: action.payload,
+      };
     default:
-      throw new Error(`Wrong type of action: ${action.type}`);
+      return state;
   }
 }
 
 function BurgerConstructor({ onHandleButtonOrderClick } : any) {
   const [totalPrice, dispatch] = React.useReducer(reducer, initialState, undefined);
 
-  let data = React.useContext(dataContext);
+  const data = React.useContext(DataContext);
+
   let counterOfBuns = 0;
   const filteredData = data.filter((item) => {
     if (item.type === 'bun' && counterOfBuns === 1) {
@@ -36,13 +39,11 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
     return true;
   });
 
-  data = filteredData;
-
   React.useEffect(() => {
     if (data && data.length > 0) {
       dispatch({
         type: 'reduce',
-        payload: data.reduce((acc, currentItem) => {
+        payload: filteredData.reduce((acc, currentItem) => {
           if (currentItem.type === 'bun') {
             return acc + currentItem.price * 2;
           }
@@ -53,39 +54,16 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
   }, []);
 
   function handleButtonOrderClick() {
-    const arrayOfId = data.reduce((acc, currentItem) => {
-      acc.push(currentItem._id);
-      return acc;
-    }, []);
+    const arrayOfId = data.map((item) => item._id);
     onHandleButtonOrderClick(arrayOfId);
   }
 
   return (
     <div className={styles.container}>
       <ul className={styles.list}>
-        {data.length > 0 && data.map((item) => {
+        {filteredData.length > 0 && filteredData.map((item) => {
           if (item.type === 'bun') {
-            return (
-              <li className={styles.listItemTop} key={item._id}>
-                <img
-                  src={item.image_mobile}
-                  alt="Фото ингредиента"
-                  className={styles.img}
-                />
-                <p className="text text_type_main-default">
-                  {item.name}
-                  {' '}
-                  (верх)
-                </p>
-                <div className={styles.price}>
-                  <span className="text text_type_digits-default mr-2">
-                    {new Intl.NumberFormat('ru').format(item.price)}
-                  </span>
-                  <CurrencyIcon type="primary" />
-                </div>
-                <LockIcon type="secondary" />
-              </li>
-            );
+            return <IngredientItem item={item} position="top" key={item._id} />;
           }
           return null;
         })}
@@ -93,58 +71,15 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
         <div className={styles.listScrolle}>
           {data.length > 0 && data.map((item) => {
             if (item.type !== 'bun') {
-              return (
-                <li key={item._id} id={item._id} className={styles.listItem}>
-                  <DragIcon type="primary" />
-                  <div className={styles.listItemRightSide}>
-                    <img
-                      src={item.image_mobile}
-                      alt="Фото ингредиента"
-                      className={styles.img}
-                    />
-                    <p className="text text_type_main-default">{item.name}</p>
-                    <div className={styles.price}>
-                      <span className="text text_type_digits-default mr-2">
-                        {new Intl.NumberFormat('ru').format(item.price)}
-                      </span>
-                      <CurrencyIcon type="primary" />
-                    </div>
-                    <button
-                      aria-label="Добавить"
-                      type="button"
-                      className={styles.delete}
-                    />
-                  </div>
-                </li>
-              );
+              return <IngredientItem item={item} position="center" key={item._id} />;
             }
             return null;
           })}
         </div>
 
-        {data.length > 0 && data.map((item) => {
+        {filteredData.length > 0 && filteredData.map((item) => {
           if (item.type === 'bun') {
-            return (
-              <li className={styles.listItemBottom} key={item._id}>
-                <img
-                  src={item.image_mobile}
-                  alt="Фото ингредиента"
-                  className={styles.img}
-                />
-                <p className="text text_type_main-default">
-                  {item.name}
-                  {' '}
-                  (низ)
-                </p>
-                <div className={styles.price}>
-                  <span className="text text_type_digits-default mr-2">
-                    {new Intl.NumberFormat('ru').format(item.price)}
-                  </span>
-                  <CurrencyIcon type="primary" />
-                </div>
-                <LockIcon type="secondary" />
-              </li>
-            );
+            return <IngredientItem item={item} position="bottom" key={item._id} />;
           }
           return null;
         })}

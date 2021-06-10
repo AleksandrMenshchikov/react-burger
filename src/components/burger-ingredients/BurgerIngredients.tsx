@@ -5,12 +5,16 @@ import {
   CurrencyIcon,
   Counter,
 } from '@ya.praktikum/react-developer-burger-ui-components';
+import { DataContext } from '../../utils/appContext';
 import styles from './BurgerIngredients.module.css';
 
-function BurgerIngredients({
-  data,
-  onBurgerIngredientsClick,
-}: any) {
+function BurgerIngredients({ onBurgerIngredientsClick }: any) {
+  const data = React.useContext(DataContext);
+  const tabContainerRef = React.useRef(null);
+  const containerRef = React.useRef(null);
+  const bunsRef = React.useRef(null);
+  const saucesRef = React.useRef(null);
+  const mainsRef = React.useRef(null);
   const [current, setCurrent] = React.useState('Булки');
   const [flagOfTabClick, setFlagOfTabClick] = React.useState(false);
   const [text, setText] = React.useState('Булки');
@@ -26,36 +30,30 @@ function BurgerIngredients({
   }
 
   useEffect(() => {
-    const tabContainerBottom = document
-      .querySelector('#tabContainer')
+    const tabContainerBottom = tabContainerRef.current
       .getBoundingClientRect().bottom;
     setTabContainerBottomCoordinate(tabContainerBottom);
 
-    const bunsTop = document
-      .querySelector('#buns')
+    const bunsTop = bunsRef.current
       .getBoundingClientRect().top;
     setBunsTopCoordinate(bunsTop);
 
-    const saucesTop = document
-      .querySelector('#sauces')
+    const saucesTop = saucesRef.current
       .getBoundingClientRect().top;
     setSaucesTopCoordinate(saucesTop);
 
-    const mainsTop = document
-      .querySelector('#mains')
+    const mainsTop = mainsRef.current
       .getBoundingClientRect().top;
     setMainsTopCoordinate(mainsTop);
   }, []);
 
   useEffect(() => {
-    const container = document.querySelector('#container');
-
     if (text === 'Булки') {
-      container.scrollTo(0, bunsTopCoordinate - tabContainerBottomCoordinate);
+      containerRef.current.scrollTo(0, bunsTopCoordinate - tabContainerBottomCoordinate);
     } else if (text === 'Соусы') {
-      container.scrollTo(0, saucesTopCoordinate - tabContainerBottomCoordinate);
+      containerRef.current.scrollTo(0, saucesTopCoordinate - tabContainerBottomCoordinate);
     } else if (text === 'Начинки') {
-      container.scrollTo(0, mainsTopCoordinate - tabContainerBottomCoordinate);
+      containerRef.current.scrollTo(0, mainsTopCoordinate - tabContainerBottomCoordinate);
     }
   }, [flagOfTabClick, bunsTopCoordinate, tabContainerBottomCoordinate,
     saucesTopCoordinate, mainsTopCoordinate, text]);
@@ -66,7 +64,7 @@ function BurgerIngredients({
         <h2 className="mt-10 mb-5 text text_type_main-large">
           Соберите бургер
         </h2>
-        <div id="tabContainer" className={styles.tabContainer}>
+        <div ref={tabContainerRef} className={styles.tabContainer}>
           <div onClick={handleTabClick} role="button" tabIndex={0} onKeyDown={handleTabClick}>
             <Tab
               value="Булки"
@@ -97,11 +95,11 @@ function BurgerIngredients({
           </div>
         </div>
       </div>
-      <div id="container" className={`${styles.container} "mt-10 mb-10"`}>
+      <div ref={containerRef} className={`${styles.container} "mt-10 mb-10"`}>
         {!!data.length
           && data.some((item: any) => item.type === 'bun') && (
             <h3
-              id="buns"
+              ref={bunsRef}
               className={`${styles.title} "text text_type_main-medium mb-6"`}
             >
               Булки
@@ -148,7 +146,7 @@ function BurgerIngredients({
         {!!data.length
           && data.some((item: any) => item.type === 'sauce') && (
             <h3
-              id="sauces"
+              ref={saucesRef}
               className={`${styles.title} "text text_type_main-medium mb-6"`}
             >
               Соусы
@@ -195,7 +193,7 @@ function BurgerIngredients({
         {!!data.length
           && data.some((item: any) => item.type === 'main') && (
             <h3
-              id="mains"
+              ref={mainsRef}
               className={`${styles.title} "text text_type_main-medium mb-6"`}
             >
               Начинки
@@ -245,22 +243,6 @@ function BurgerIngredients({
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string,
-      name: PropTypes.string,
-      type: PropTypes.string,
-      proteins: PropTypes.number,
-      fat: PropTypes.number,
-      carbohydrates: PropTypes.number,
-      calories: PropTypes.number,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      image_mobile: PropTypes.string,
-      image_large: PropTypes.string,
-      __v: PropTypes.number,
-    }),
-  ).isRequired,
   onBurgerIngredientsClick: PropTypes.func.isRequired,
 };
 

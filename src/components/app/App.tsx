@@ -7,15 +7,16 @@ import ModalOverlay from '../modal-overlay/ModalOverlay';
 import Modal from '../modal/Modal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 import OrderDetails from '../order-details/OrderDetails';
+import PreloadModal from '../preload-modal/PreloadModal';
 import styles from './App.module.css';
 import stylesBurgerIngredients from '../burger-ingredients/BurgerIngredients.module.css';
 import stylesModalOverlay from '../modal-overlay/ModalOverlay.module.css';
 import stylesModal from '../modal/Modal.module.css';
-import { dataContext } from '../../utils/appContext';
+import { DataContext } from '../../utils/appContext';
 import { api } from '../../utils/api';
-import spinWhite from '../../images/spin-white.svg';
 
 const root = document.querySelector('#root');
+const preloadModalRoot = document.getElementById('preload-modal-root');
 
 function App(): JSX.Element {
   const [idBurgerIngredients, setIdBurgerIngredients] = React.useState(null);
@@ -95,42 +96,22 @@ function App(): JSX.Element {
   }, []);
 
   if (data && data.length === 0) {
-    return ReactDOM.createPortal(
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {isError ? (
-          <h1 className="text text_type_main-large">
-            Ошибка на сервере. Попробуйте зайти на сайт чуть позже.
-          </h1>
-        ) : (
-          <img src={spinWhite} alt="Загрузка данных" />
-        )}
-      </div>,
-      document.getElementById('preload-modal-root'),
-    );
+    return ReactDOM.createPortal(<PreloadModal isError={isError} />, preloadModalRoot);
   }
   return (
     <>
       <AppHeader />
       <main className={`${styles.main} pl-5 pr-5`}>
-        {data && data.length > 0 && (
-        <BurgerIngredients
-          data={data}
-          onBurgerIngredientsClick={burgerIngredientsClick}
-        />
-        )}
-        <dataContext.Provider value={data}>
+        <DataContext.Provider value={data}>
+          {data && data.length > 0 && (
+          <BurgerIngredients
+            onBurgerIngredientsClick={burgerIngredientsClick}
+          />
+          )}
           <BurgerConstructor
             onHandleButtonOrderClick={handleButtonOrderClick}
           />
-        </dataContext.Provider>
-
+        </DataContext.Provider>
       </main>
 
       <ModalOverlay isModalOverlayOpened={isModalOverlayOpened}>
