@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { CurrencyIcon, LockIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './BurgerConstructorItem.module.css';
 
-function IngredientItem({ item, position }) {
+function BurgerConstructorItem({ item, position }) {
   return (
     <li
       className={styles.listItem}
@@ -47,7 +47,7 @@ function IngredientItem({ item, position }) {
   );
 }
 
-IngredientItem.prototype = {
+BurgerConstructorItem.prototype = {
   item: PropTypes.shape({
     _id: PropTypes.string,
     name: PropTypes.string,
@@ -65,4 +65,4 @@ IngredientItem.prototype = {
   position: PropTypes.string.isRequired,
 };
 
-export default React.memo(IngredientItem);
+export default React.memo(BurgerConstructorItem);

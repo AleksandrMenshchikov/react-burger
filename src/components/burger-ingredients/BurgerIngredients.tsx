@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { DataContext } from '../../utils/appContext';
+import { useSelector } from 'react-redux';
 import BurgerIngredientsItem from '../burger-ingredients-item/BurgerIngredientsItem';
 import styles from './BurgerIngredients.module.css';
+import { RootState } from '../../services/reducers';
 
-function BurgerIngredients({ onBurgerIngredientsClick }: any) {
-  const data = React.useContext(DataContext);
+function BurgerIngredients() {
+  const { data } = useSelector((state: RootState) => state.ingredients);
   const tabContainerRef = React.useRef(null);
   const containerRef = React.useRef(null);
   const bunsRef = React.useRef(null);
@@ -110,7 +110,6 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
                 return (
                   <BurgerIngredientsItem
                     item={item}
-                    onBurgerIngredientsClick={onBurgerIngredientsClick}
                     key={item._id}
                   />
                 );
@@ -135,7 +134,6 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
                 return (
                   <BurgerIngredientsItem
                     item={item}
-                    onBurgerIngredientsClick={onBurgerIngredientsClick}
                     key={item._id}
                   />
                 );
@@ -160,7 +158,6 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
                 return (
                   <BurgerIngredientsItem
                     item={item}
-                    onBurgerIngredientsClick={onBurgerIngredientsClick}
                     key={item._id}
                   />
                 );
@@ -172,9 +169,5 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
     </div>
   );
 }
-
-BurgerIngredients.propTypes = {
-  onBurgerIngredientsClick: PropTypes.func.isRequired,
-};
 
 export default React.memo(BurgerIngredients);

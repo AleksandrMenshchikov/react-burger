@@ -1,8 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AsyncGetNumberOrderDetails } from '../../services/actions/orderDetails';
+import { RootState } from '../../services/reducers';
 import BurgerConstructorItem from '../burger-constructor-item/BurgerConstructorItem';
-import { DataContext } from '../../utils/appContext';
 import styles from './BurgerConstructor.module.css';
 
 const initialState = { totalPrice: 0 };
@@ -19,10 +20,11 @@ function reducer(state = initialState, action) {
   }
 }
 
-function BurgerConstructor({ onHandleButtonOrderClick } : any) {
-  const [totalPrice, dispatch] = React.useReducer(reducer, initialState, undefined);
+function BurgerConstructor() {
+  const dispatch = useDispatch();
+  const [totalPrice, dispatched] = React.useReducer(reducer, initialState, undefined);
 
-  const data = React.useContext(DataContext);
+  const { data } = useSelector((state: RootState) => state.ingredients);
 
   let counterOfBuns = 0;
   const filteredData = data.filter((item) => {
@@ -38,7 +40,7 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
 
   React.useEffect(() => {
     if (data && data.length > 0) {
-      dispatch({
+      dispatched({
         type: 'reduce',
         payload: filteredData.reduce((acc, currentItem) => {
           if (currentItem.type === 'bun') {
@@ -52,7 +54,7 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
 
   function handleButtonOrderClick() {
     const arrayOfId = data.map((item) => item._id);
-    onHandleButtonOrderClick(arrayOfId);
+    dispatch(AsyncGetNumberOrderDetails(arrayOfId));
   }
 
   return (
@@ -99,9 +101,5 @@ function BurgerConstructor({ onHandleButtonOrderClick } : any) {
     </div>
   );
 }
-
-BurgerConstructor.propTypes = {
-  onHandleButtonOrderClick: PropTypes.func.isRequired,
-};
 
 export default React.memo(BurgerConstructor);

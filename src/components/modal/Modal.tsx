@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import styles from './Modal.module.css';
+import { RootState } from '../../services/reducers';
 
-function Modal({ nameComponentActive, children }: any) {
+function Modal({ children }: any) {
+  const { nameComponentActive } = useSelector((state:RootState) => state.modalOverlay);
   return (
     <div className={styles.modal}>
       <div className={styles.container}>
@@ -20,7 +23,6 @@ function Modal({ nameComponentActive, children }: any) {
 }
 
 Modal.propTypes = {
-  nameComponentActive: PropTypes.string.isRequired,
   children: PropTypes.element,
 };
 

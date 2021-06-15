@@ -1,17 +1,29 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setDataBurgerIngredient } from '../../services/actions/ingredients';
+import { setIsModalOverlayOpened, setNameComponentActive } from '../../services/actions/modalOverlay';
 import styles from './BurgerIngredientsItem.module.css';
 
-function BurgerIngredientsItem({ item, onBurgerIngredientsClick }) {
+function BurgerIngredientsItem({ item }) {
+  const dispatch = useDispatch();
+
+  const handleLiClick = (e) => {
+    dispatch(setDataBurgerIngredient(e.currentTarget.id));
+    dispatch(setIsModalOverlayOpened(true));
+    dispatch(setNameComponentActive('BurgerIngredients'));
+  };
+
   return (
-    <li className={styles.listItem} id={item._id}>
+    <li className={styles.listItem}>
       <div
+        id={item._id}
         className={styles.burgerIngredients}
-        onClick={onBurgerIngredientsClick}
+        onClick={handleLiClick}
         role="button"
         tabIndex={0}
-        onKeyDown={onBurgerIngredientsClick}
+        onKeyDown={(e) => e.key === 'Enter' && handleLiClick}
       >
         <Counter count={1} size="default" />
         <img
@@ -50,7 +62,6 @@ BurgerIngredientsItem.prototype = {
     image_large: PropTypes.string,
     __v: PropTypes.number,
   }).isRequired,
-  onBurgerIngredientsClick: PropTypes.func.isRequired,
 };
 
 export default React.memo(BurgerIngredientsItem);

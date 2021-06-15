@@ -1,14 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import styles from './PreloadModal.module.css';
 import spinWhite from '../../images/spin-white.svg';
+import { RootState } from '../../services/reducers';
 
-function PreloadModal({ isError }): JSX.Element {
+function PreloadModal(): JSX.Element {
+  const { isErrorData } = useSelector((state: RootState) => state.ingredients);
   return (
     <div
       className={styles.container}
     >
-      {isError ? (
+      {isErrorData ? (
         <h1 className="text text_type_main-large">
           Ошибка на сервере. Попробуйте зайти на сайт чуть позже.
         </h1>
@@ -18,9 +20,5 @@ function PreloadModal({ isError }): JSX.Element {
     </div>
   );
 }
-
-PreloadModal.propTypes = {
-  isError: PropTypes.bool.isRequired,
-};
 
 export default React.memo(PreloadModal);
