@@ -11,7 +11,7 @@ export const deleteNumberOrderDetails = () => ({
   type: DELETE_NUMBER_ORDER_DETAILS,
 });
 
-export const AsyncGetNumberOrderDetails = (arrayOfId) => (dispatch, getState) => {
+export const getNumberOrderDetails = (arrayOfId) => (dispatch, getState) => {
   dispatch(setIsModalOverlayOpened(true));
   dispatch(setNameComponentActive('BurgerConstructor'));
   api.postOrders(arrayOfId)

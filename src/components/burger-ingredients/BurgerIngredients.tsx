@@ -109,7 +109,7 @@ function BurgerIngredients() {
               if (item.type === 'bun') {
                 return (
                   <BurgerIngredientsItem
-                    item={item}
+                    ingredient={item}
                     key={item._id}
                   />
                 );
@@ -133,7 +133,7 @@ function BurgerIngredients() {
               if (item.type === 'sauce') {
                 return (
                   <BurgerIngredientsItem
-                    item={item}
+                    ingredient={item}
                     key={item._id}
                   />
                 );
@@ -157,7 +157,7 @@ function BurgerIngredients() {
               if (item.type === 'main') {
                 return (
                   <BurgerIngredientsItem
-                    item={item}
+                    ingredient={item}
                     key={item._id}
                   />
                 );

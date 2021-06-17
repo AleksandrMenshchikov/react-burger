@@ -6,7 +6,7 @@ import {
 } from '../constants/actionTypes';
 import { api } from '../../utils/api';
 
-const getIngredients = (data) => ({
+export const setIngredients = (data) => ({
   type: GET_INGREDIENTS,
   data,
 });
@@ -25,9 +25,9 @@ export const deleteDataBurgerIngredient = () => ({
   type: DELETE_DATA_BURGER_INGREDIENT,
 });
 
-export const AsyncGetIngredients = () => (dispatch) => {
+export const getIngredients = () => (dispatch) => {
   api.getIngredients()
-    .then((res) => dispatch(getIngredients(res.data)))
+    .then((res) => dispatch(setIngredients(res.data)))
     .catch((err) => {
       dispatch(setIsErrorData(true));
       console.error(err);

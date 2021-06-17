@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AsyncGetIngredients, deleteDataBurgerIngredient } from '../../services/actions/ingredients';
+import { getIngredients, deleteDataBurgerIngredient } from '../../services/actions/ingredients';
 import { setIsModalOverlayOpened } from '../../services/actions/modalOverlay';
 import { deleteNumberOrderDetails } from '../../services/actions/orderDetails';
 import { RootState } from '../../services/reducers';
@@ -25,7 +25,7 @@ function App(): JSX.Element {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(AsyncGetIngredients());
+    dispatch(getIngredients());
 
     function closeModalOverlayByEsc(e) {
       if (e.key === 'Escape') {

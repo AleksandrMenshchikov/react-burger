@@ -1,46 +1,69 @@
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useDrag } from 'react-dnd';
 import { useDispatch } from 'react-redux';
 import { setDataBurgerIngredient } from '../../services/actions/ingredients';
 import { setIsModalOverlayOpened, setNameComponentActive } from '../../services/actions/modalOverlay';
 import styles from './BurgerIngredientsItem.module.css';
+import { addIngredientToBurgerConstructor } from '../../services/actions/burgerConstructor';
 
-function BurgerIngredientsItem({ item }) {
+function BurgerIngredientsItem({ ingredient }) {
   const dispatch = useDispatch();
 
-  const handleLiClick = (e) => {
-    dispatch(setDataBurgerIngredient(e.currentTarget.id));
-    dispatch(setIsModalOverlayOpened(true));
-    dispatch(setNameComponentActive('BurgerIngredients'));
-  };
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'burgerIngredientsItem',
+    item: ingredient,
+    end: (item, monitor) => {
+      const dropResult = monitor.getDropResult();
+      if (item && dropResult) {
+        dispatch(addIngredientToBurgerConstructor(item));
+      }
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  }));
+
+  const opacity = isDragging ? 0.4 : 1;
+
+  const handleLiClick = React.useCallback(
+    (e) => {
+      dispatch(setDataBurgerIngredient(e.currentTarget.id));
+      dispatch(setIsModalOverlayOpened(true));
+      dispatch(setNameComponentActive('BurgerIngredients'));
+    },
+    [],
+  );
 
   return (
     <li className={styles.listItem}>
       <div
-        id={item._id}
+        style={{ opacity }}
+        ref={drag}
+        id={ingredient._id}
         className={styles.burgerIngredients}
         onClick={handleLiClick}
         role="button"
         tabIndex={0}
         onKeyDown={(e) => e.key === 'Enter' && handleLiClick}
       >
-        <Counter count={1} size="default" />
+        {ingredient.counter > 0 && <Counter count={ingredient.counter} size="default" />}
         <img
-          src={item.image}
+          src={ingredient.image}
           alt="Фото соуса"
           className="pl-4 pr-4"
         />
         <div className={`${styles.price} pt-1 pb-1`}>
           <span className="text text_type_digits-default pr-2">
-            {new Intl.NumberFormat('ru').format(item.price)}
+            {new Intl.NumberFormat('ru').format(ingredient.price)}
           </span>
           <CurrencyIcon type="primary" />
         </div>
         <h5
           className={`${styles.listItem__text} text text_type_main-default`}
         >
-          {item.name}
+          {ingredient.name}
         </h5>
       </div>
     </li>

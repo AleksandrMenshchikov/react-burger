@@ -1,13 +1,15 @@
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactDOM from 'react-dom';
-import { compose, createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import './index.css';
 import { BrowserRouter } from 'react-router-dom';
-import { rootReducer } from './services/reducers/index';
+import { applyMiddleware, compose, createStore } from 'redux';
+import thunk from 'redux-thunk';
 import App from './components/app/App';
+import './index.css';
 import reportWebVitals from './reportWebVitals';
+import { rootReducer } from './services/reducers/index';
 
 declare global {
     interface Window {
@@ -25,7 +27,9 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <App />
+        <DndProvider backend={HTML5Backend}>
+          <App />
+        </DndProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,
