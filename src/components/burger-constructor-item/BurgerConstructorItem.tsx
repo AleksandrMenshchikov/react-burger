@@ -23,13 +23,12 @@ function BurgerConstructorItem({ ingredient, position }) {
     }),
   }));
 
-  const opacity = isDragging ? 0.4 : 1;
+  const opacity = isDragging ? 0 : 1;
 
-  const [{ isOver, canDrop }, drop] = useDrop(() => ({
+  const [{ isOver }, drop] = useDrop(() => ({
     accept: 'burgerConstructorItem',
     collect: (monitor) => ({
       isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
     }),
   }));
   const id = isOver && ingredient._id;
@@ -71,7 +70,8 @@ function BurgerConstructorItem({ ingredient, position }) {
   return (
     <li
       ref={position === 'center' ? drag : null}
-      className={`${styles.listItem} ${opacity}`}
+      style={{ opacity }}
+      className={styles.listItem}
     >
       {position === 'center' && <DragIcon type="primary" />}
       <div
