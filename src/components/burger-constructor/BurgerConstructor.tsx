@@ -55,6 +55,8 @@ function BurgerConstructor() {
           return acc + currentItem.price;
         }, 0),
       });
+    } else {
+      despatch({ type: 'reduce', payload: 0 });
     }
     const dataIngredientsWithCounters = dataIngredients.map((item) => {
       const id = item._id;

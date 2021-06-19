@@ -1,3 +1,59 @@
+.titleContainer {
+  width: 100%;
+  color: #f2f2f3;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  align-items: center;
+  justify-content: space-between;
+  grid-template-rows: 64px;
+}
+
+.button {
+  width: 24px;
+  height: 24px;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  position: relative;
+  cursor: pointer;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  background-color: #f2f2f3;
+  height: 2px;
+  border-radius: 2px;
+  transform: rotate(45deg) translate(-50%, -50%);
+  transform-origin: 0 0;
+  transition: all 0.2s;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  background-color: #f2f2f3;
+  height: 2px;
+  border-radius: 2px;
+  transform: rotate(-45deg) translate(-50%, -50%);
+  transform-origin: 0 0;
+  transition: all 0.2s;
+}
+
+.button:hover::before {
+  opacity: 0.8;
+}
+
+.button:hover::after {
+  opacity: 0.8;
+}
+
 .imgContainer {
   min-height: 240px;
   display: flex;
