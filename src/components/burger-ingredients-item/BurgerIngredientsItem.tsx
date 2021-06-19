@@ -46,7 +46,7 @@ function BurgerIngredientsItem({ ingredient }) {
         onClick={handleLiClick}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && handleLiClick}
+        onKeyDown={(e) => e.key === 'Enter' && handleLiClick(e)}
       >
         {ingredient.counter > 0 && <Counter count={ingredient.counter} size="default" />}
         <img

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './PreloadModal.module.css';
+import styles from './Preload.module.css';
 import spinWhite from '../../images/spin-white.svg';
 import { RootState } from '../../services/reducers';
 
-function PreloadModal(): JSX.Element {
+function Preload(): JSX.Element {
   const { isErrorData } = useSelector((state: RootState) => state.ingredients);
   return (
     <div
@@ -21,4 +21,4 @@ function PreloadModal(): JSX.Element {
   );
 }
 
-export default React.memo(PreloadModal);
+export default React.memo(Preload);

@@ -26,7 +26,7 @@ function BurgerConstructorScrolle() {
     <div ref={drop} className={`${styles.listScrolle} ${containerInnerAtive}`}>
       {data.length > 0 && data.map((item) => {
         if (item.type !== 'bun') {
-          return <BurgerConstructorItem ingredient={item} position="center" key={item._id} />;
+          return <BurgerConstructorItem ingredient={item} position="center" key={item._uid} />;
         }
         return null;
       })}

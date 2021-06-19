@@ -31,17 +31,17 @@ function BurgerConstructorItem({ ingredient, position }) {
       isOver: monitor.isOver(),
     }),
   }));
-  const id = isOver && ingredient._id;
+  const id = isOver && ingredient._uid;
 
   React.useEffect(() => {
     if (item) {
-      const dragElementId = item._id;
+      const dragElementId = item._uid;
       const dropElementId = id;
       if (dragElementId && dropElementId) {
-        const indexDragElement = data.findIndex((elem) => elem._id === dragElementId);
-        const indexDropElement = data.findIndex((elem) => elem._id === dropElementId);
-        const dragElement = data.find((elem) => elem._id === dragElementId);
-        const dropElement = data.find((elem) => elem._id === dropElementId);
+        const indexDragElement = data.findIndex((elem) => elem._uid === dragElementId);
+        const indexDropElement = data.findIndex((elem) => elem._uid === dropElementId);
+        const dragElement = data.find((elem) => elem._uid === dragElementId);
+        const dropElement = data.find((elem) => elem._uid === dropElementId);
         let newData;
         if (dragElementId !== dropElementId) {
           newData = data.map((elem, index) => {
@@ -64,7 +64,7 @@ function BurgerConstructorItem({ ingredient, position }) {
   }, [item, id]);
 
   function handleButtonClick() {
-    dispatch(deleteIngredientFromBurgerConstructor(ingredient._id));
+    dispatch(deleteIngredientFromBurgerConstructor(ingredient._uid));
   }
 
   return (

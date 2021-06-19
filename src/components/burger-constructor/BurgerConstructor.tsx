@@ -4,28 +4,15 @@ import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
 import { setIngredients } from '../../services/actions/ingredients';
 import { getNumberOrderDetails } from '../../services/actions/orderDetails';
+import { updateTotalPriceToBurgerConstructor } from '../../services/actions/burgerConstructor';
 import { RootState } from '../../services/reducers';
 import BurgerConstructorItem from '../burger-constructor-item/BurgerConstructorItem';
 import styles from './BurgerConstructor.module.css';
 import BurgerConstructorScrolle from '../burger-constructor-scrolle/BurgerConstructorScrolle';
 
-const initialState = { totalPrice: 0 };
-
-function reducer(state = initialState, action) {
-  switch (action.type) {
-    case 'reduce':
-      return {
-        ...state,
-        totalPrice: action.payload,
-      };
-    default:
-      return state;
-  }
-}
-
 function BurgerConstructor() {
   const dispatch = useDispatch();
-  const { data } = useSelector((state: RootState) => state.burgerConstructor);
+  const { data, totalPrice } = useSelector((state: RootState) => state.burgerConstructor);
   const { data: dataIngredients } = useSelector((state: RootState) => state.ingredients);
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'burgerIngredientsItem',
@@ -42,27 +29,14 @@ function BurgerConstructor() {
     containerInnerAtive = styles.containerInner_isOver;
   }
 
-  const [totalPrice, despatch] = React.useReducer(reducer, initialState, undefined);
-
   React.useEffect(() => {
-    if (data && data.length > 0) {
-      despatch({
-        type: 'reduce',
-        payload: data.reduce((acc, currentItem) => {
-          if (currentItem.type === 'bun') {
-            return acc + currentItem.price * 2;
-          }
-          return acc + currentItem.price;
-        }, 0),
-      });
-    } else {
-      despatch({ type: 'reduce', payload: 0 });
-    }
+    dispatch(updateTotalPriceToBurgerConstructor());
+
     const dataIngredientsWithCounters = dataIngredients.map((item) => {
       const id = item._id;
       let count = 0;
       data.forEach((elem) => {
-        if (elem._id.slice(0, 24) === id) {
+        if (elem._id === id) {
           count += 1;
         }
       });
@@ -75,7 +49,7 @@ function BurgerConstructor() {
   }, [data]);
 
   function handleButtonOrderClick() {
-    const arrayOfId = data.map((item) => item._id.slice(0, 24));
+    const arrayOfId = data.map((item) => item._id);
     dispatch(getNumberOrderDetails(arrayOfId));
   }
 
@@ -86,7 +60,7 @@ function BurgerConstructor() {
           <ul className={styles.list}>
             {data.length > 0 && data.map((item) => {
               if (item.type === 'bun') {
-                return <BurgerConstructorItem ingredient={item} position="top" key={item._id} />;
+                return <BurgerConstructorItem ingredient={item} position="top" key={item._uid} />;
               }
               return null;
             })}
@@ -95,7 +69,7 @@ function BurgerConstructor() {
 
             {data.length > 0 && data.map((item) => {
               if (item.type === 'bun') {
-                return <BurgerConstructorItem ingredient={item} position="bottom" key={item._id} />;
+                return <BurgerConstructorItem ingredient={item} position="bottom" key={item._uid} />;
               }
               return null;
             })}
@@ -110,7 +84,7 @@ function BurgerConstructor() {
       <div className={styles.totalPriceContainer}>
         <div>
           <span className="text text_type_digits-medium mr-2">
-            {new Intl.NumberFormat('ru').format(totalPrice.totalPrice)}
+            {new Intl.NumberFormat('ru').format(totalPrice)}
           </span>
           <CurrencyIcon type="primary" />
         </div>

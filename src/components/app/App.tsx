@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients, deleteDataBurgerIngredient } from '../../services/actions/ingredients';
 import { setIsModalOverlayOpened } from '../../services/actions/modalOverlay';
@@ -15,10 +14,8 @@ import Modal from '../modal/Modal';
 import stylesIngredientDetails from '../ingredient-details/IngredientDetails.module.css';
 import stylesOrderDetails from '../order-details/OrderDetails.module.css';
 import OrderDetails from '../order-details/OrderDetails';
-import PreloadModal from '../preload-modal/PreloadModal';
 import styles from './App.module.css';
-
-const preloadModalRoot = document.getElementById('preload-modal-root');
+import Preload from '../preload/Preload';
 
 function App(): JSX.Element {
   const { data } = useSelector((state: RootState) => state.ingredients);
@@ -66,7 +63,7 @@ function App(): JSX.Element {
   }, []);
 
   if (data && data.length === 0) {
-    return ReactDOM.createPortal(<PreloadModal />, preloadModalRoot);
+    return <Preload />;
   }
   return (
     <>

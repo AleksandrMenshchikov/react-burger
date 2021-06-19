@@ -1,8 +1,13 @@
-import { SET_INGREDIENTS_TO_BURGER_CONSTRUCTOR } from '../constants/actionTypes';
+import { SET_INGREDIENTS_TO_BURGER_CONSTRUCTOR, SET_TOTALPRICE_TO_BURGER_CONSTRUCTOR } from '../constants/actionTypes';
 
 export const setIngredientsToBurgerConstructor = (newData) => ({
   type: SET_INGREDIENTS_TO_BURGER_CONSTRUCTOR,
   newData,
+});
+
+const setTotalPriceToBurgerConstructor = (totalPrice) => ({
+  type: SET_TOTALPRICE_TO_BURGER_CONSTRUCTOR,
+  totalPrice,
 });
 
 export const addIngredientToBurgerConstructor = (ingredient) => (dispatch, getState) => {
@@ -19,17 +24,28 @@ export const addIngredientToBurgerConstructor = (ingredient) => (dispatch, getSt
       }
       return true;
     })
-    .map((item, index) => {
-      if (item.type !== 'bun') {
-        return { ...item, _id: item._id.slice(0, 24) + index };
-      }
-      return item;
-    });
+    .map((item, index) => ({ ...item, _uid: item._id + index }));
   dispatch(setIngredientsToBurgerConstructor(filteredData));
 };
 
-export const deleteIngredientFromBurgerConstructor = (id) => (dispatch, getState) => {
+export const deleteIngredientFromBurgerConstructor = (uid) => (dispatch, getState) => {
   const { data } = getState().burgerConstructor;
-  const newData = data.filter((item) => item._id !== id);
+  const newData = data.filter((item) => item._uid !== uid);
   dispatch(setIngredientsToBurgerConstructor(newData));
+};
+
+export const updateTotalPriceToBurgerConstructor = () => (dispatch, getState) => {
+  const { data } = getState().burgerConstructor;
+  let totalPrice;
+  if (data && data.length > 0) {
+    totalPrice = data.reduce((acc, currentItem) => {
+      if (currentItem.type === 'bun') {
+        return acc + currentItem.price * 2;
+      }
+      return acc + currentItem.price;
+    }, 0);
+  } else {
+    totalPrice = 0;
+  }
+  dispatch(setTotalPriceToBurgerConstructor(totalPrice));
 };
