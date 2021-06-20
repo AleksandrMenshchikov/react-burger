@@ -27,7 +27,7 @@ function BurgerIngredientsItem({ ingredient }) {
 
   const opacity = isDragging ? 0.4 : 1;
 
-  const handleLiClick = React.useCallback(
+  const handleIngredientClick = React.useCallback(
     (e) => {
       dispatch(setDataBurgerIngredient(e.currentTarget.id));
       dispatch(setIsModalOverlayOpened(true));
@@ -43,10 +43,10 @@ function BurgerIngredientsItem({ ingredient }) {
         ref={drag}
         id={ingredient._id}
         className={styles.burgerIngredients}
-        onClick={handleLiClick}
+        onClick={handleIngredientClick}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => e.key === 'Enter' && handleLiClick(e)}
+        onKeyDown={(e) => e.key === 'Enter' && handleIngredientClick(e)}
       >
         {ingredient.counter > 0 && <Counter count={ingredient.counter} size="default" />}
         <img
