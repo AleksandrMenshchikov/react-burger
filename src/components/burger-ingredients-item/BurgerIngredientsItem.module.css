@@ -1,0 +1,28 @@
+.listItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  min-height: 224px;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
+.listItem__text {
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 48px;
+}
+
+.burgerIngredients {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}

@@ -2,14 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Modal.module.css';
 
-function Modal({ nameComponentActive, children }: any) {
+function Modal({ title, children }: any) {
   return (
     <div className={styles.modal}>
       <div className={styles.container}>
         <div className={styles.titleContainer}>
           <h3 className="text text_type_main-large">
-            {nameComponentActive === 'BurgerIngredients'
-              && 'Детали ингредиента'}
+            {title}
           </h3>
           <button type="button" className={styles.button} aria-label="Закрыть" />
         </div>
@@ -20,7 +19,7 @@ function Modal({ nameComponentActive, children }: any) {
 }
 
 Modal.propTypes = {
-  nameComponentActive: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   children: PropTypes.element,
 };
 

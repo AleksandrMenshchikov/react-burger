@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import {
-  Tab,
-  CurrencyIcon,
-  Counter,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { DataContext } from '../../utils/appContext';
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector } from 'react-redux';
+import BurgerIngredientsItem from '../burger-ingredients-item/BurgerIngredientsItem';
 import styles from './BurgerIngredients.module.css';
+import { RootState } from '../../services/reducers';
 
-function BurgerIngredients({ onBurgerIngredientsClick }: any) {
-  const data = React.useContext(DataContext);
+function BurgerIngredients() {
+  const { data } = useSelector((state: RootState) => state.ingredients);
   const tabContainerRef = React.useRef(null);
   const containerRef = React.useRef(null);
   const bunsRef = React.useRef(null);
@@ -111,33 +108,10 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
             && data.map((item: any) => {
               if (item.type === 'bun') {
                 return (
-                  <li className={styles.listItem} id={item._id} key={item._id}>
-                    <div
-                      className={styles.burgerIngredients}
-                      onClick={onBurgerIngredientsClick}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={onBurgerIngredientsClick}
-                    >
-                      <Counter count={1} size="default" />
-                      <img
-                        src={item.image}
-                        alt="Фото булки"
-                        className="pl-4 pr-4"
-                      />
-                      <div className={`${styles.price} pt-1 pb-1`}>
-                        <span className="text text_type_digits-default pr-2">
-                          {new Intl.NumberFormat('ru').format(item.price)}
-                        </span>
-                        <CurrencyIcon type="primary" />
-                      </div>
-                      <h5
-                        className={`${styles.listItem__text} text text_type_main-default`}
-                      >
-                        {item.name}
-                      </h5>
-                    </div>
-                  </li>
+                  <BurgerIngredientsItem
+                    ingredient={item}
+                    key={item._id}
+                  />
                 );
               }
               return null;
@@ -158,33 +132,10 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
             && data.map((item: any) => {
               if (item.type === 'sauce') {
                 return (
-                  <li className={styles.listItem} id={item._id} key={item._id}>
-                    <div
-                      className={styles.burgerIngredients}
-                      onClick={onBurgerIngredientsClick}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={onBurgerIngredientsClick}
-                    >
-                      <Counter count={1} size="default" />
-                      <img
-                        src={item.image}
-                        alt="Фото соуса"
-                        className="pl-4 pr-4"
-                      />
-                      <div className={`${styles.price} pt-1 pb-1`}>
-                        <span className="text text_type_digits-default pr-2">
-                          {new Intl.NumberFormat('ru').format(item.price)}
-                        </span>
-                        <CurrencyIcon type="primary" />
-                      </div>
-                      <h5
-                        className={`${styles.listItem__text} text text_type_main-default`}
-                      >
-                        {item.name}
-                      </h5>
-                    </div>
-                  </li>
+                  <BurgerIngredientsItem
+                    ingredient={item}
+                    key={item._id}
+                  />
                 );
               }
               return null;
@@ -205,33 +156,10 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
             && data.map((item: any) => {
               if (item.type === 'main') {
                 return (
-                  <li className={styles.listItem} id={item._id} key={item._id}>
-                    <div
-                      className={styles.burgerIngredients}
-                      onClick={onBurgerIngredientsClick}
-                      role="button"
-                      tabIndex={0}
-                      onKeyDown={onBurgerIngredientsClick}
-                    >
-                      <Counter count={1} size="default" />
-                      <img
-                        src={item.image}
-                        alt="Фото начинки"
-                        className="pl-4 pr-4"
-                      />
-                      <div className={`${styles.price} pt-1 pb-1`}>
-                        <span className="text text_type_digits-default pr-2">
-                          {new Intl.NumberFormat('ru').format(item.price)}
-                        </span>
-                        <CurrencyIcon type="primary" />
-                      </div>
-                      <h5
-                        className={`${styles.listItem__text} text text_type_main-default`}
-                      >
-                        {item.name}
-                      </h5>
-                    </div>
-                  </li>
+                  <BurgerIngredientsItem
+                    ingredient={item}
+                    key={item._id}
+                  />
                 );
               }
               return null;
@@ -241,9 +169,5 @@ function BurgerIngredients({ onBurgerIngredientsClick }: any) {
     </div>
   );
 }
-
-BurgerIngredients.propTypes = {
-  onBurgerIngredientsClick: PropTypes.func.isRequired,
-};
 
 export default React.memo(BurgerIngredients);

@@ -1,62 +1,53 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIngredients, deleteDataBurgerIngredient } from '../../services/actions/ingredients';
+import { setIsModalOverlayOpened } from '../../services/actions/modalOverlay';
+import { deleteNumberOrderDetails } from '../../services/actions/orderDetails';
+import { RootState } from '../../services/reducers';
 import AppHeader from '../app-header/AppHeader';
-import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import ModalOverlay from '../modal-overlay/ModalOverlay';
-import Modal from '../modal/Modal';
+import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
-import OrderDetails from '../order-details/OrderDetails';
-import PreloadModal from '../preload-modal/PreloadModal';
-import styles from './App.module.css';
-import stylesBurgerIngredients from '../burger-ingredients/BurgerIngredients.module.css';
+import ModalOverlay from '../modal-overlay/ModalOverlay';
 import stylesModalOverlay from '../modal-overlay/ModalOverlay.module.css';
+import Modal from '../modal/Modal';
 import stylesModal from '../modal/Modal.module.css';
-import { DataContext } from '../../utils/appContext';
-import { api } from '../../utils/api';
-
-const root = document.querySelector('#root');
-const preloadModalRoot = document.getElementById('preload-modal-root');
+import OrderDetails from '../order-details/OrderDetails';
+import styles from './App.module.css';
+import Preload from '../preload/Preload';
 
 function App(): JSX.Element {
-  const [idBurgerIngredients, setIdBurgerIngredients] = React.useState(null);
-  const [data, setData] = React.useState([]);
-  const [isError, setIsError] = React.useState(false);
-  const [isModalOverlayOpened, setIsModalOverlayOpened] = React.useState(false);
-  const [nameComponentActive, setNameComponentActive] = React.useState('');
-  const [dataOrderDetails, setDataOrderDetails] = React.useState(0);
+  const { data } = useSelector((state: RootState) => state.ingredients);
+  const { nameComponentActive } = useSelector((state: RootState) => state.modalOverlay);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    api
-      .getIngredients()
-      .then((res) => {
-        const { data: arr } = res;
-        setData(arr);
-        root.setAttribute('style', 'opacity: 1');
-      })
-      .catch((err) => {
-        setIsError(true);
-        console.error(err);
-      });
+    dispatch(getIngredients());
 
     function closeModalOverlayByEsc(e) {
       if (e.key === 'Escape') {
-        setIsModalOverlayOpened(false);
+        dispatch(setIsModalOverlayOpened(false));
         let timer;
         clearTimeout(timer);
-        timer = setTimeout(() => setDataOrderDetails(0), 200);
+        timer = setTimeout(() => {
+          dispatch(deleteDataBurgerIngredient());
+          dispatch(deleteNumberOrderDetails());
+        }, 200);
       }
     }
 
     function closeModalOverlayByButtonClick(e) {
       if (
         e.target.classList.contains(stylesModal.button)
-         || e.target.classList.contains(stylesModalOverlay.modalOverlay)
+        || e.target.classList.contains(stylesModalOverlay.modalOverlay)
       ) {
-        setIsModalOverlayOpened(false);
+        dispatch(setIsModalOverlayOpened(false));
         let timer;
         clearTimeout(timer);
-        timer = setTimeout(() => setDataOrderDetails(0), 200);
+        timer = setTimeout(() => {
+          dispatch(deleteDataBurgerIngredient());
+          dispatch(deleteNumberOrderDetails());
+        }, 200);
       }
     }
 
@@ -69,62 +60,28 @@ function App(): JSX.Element {
     };
   }, []);
 
-  const dataForIngredientDetails = React.useMemo(() => {
-    if (data && data.length > 0) {
-      return data.find((item) => item._id === idBurgerIngredients);
-    }
-    return null;
-  }, [data, idBurgerIngredients]);
-
-  const burgerIngredientsClick = React.useCallback((e) => {
-    setIdBurgerIngredients(
-      e.target.closest(`.${stylesBurgerIngredients.listItem}`).id,
-    );
-    setIsModalOverlayOpened(true);
-    setNameComponentActive('BurgerIngredients');
-  }, []);
-
-  const handleButtonOrderClick = React.useCallback((arrayOfId) => {
-    setIsModalOverlayOpened(true);
-    setNameComponentActive('BurgerConstructor');
-    api.postOrders(arrayOfId)
-      .then((res) => setDataOrderDetails(res.order.number))
-      .catch((err) => {
-        setDataOrderDetails(-1);
-        console.error(err);
-      });
-  }, []);
-
   if (data && data.length === 0) {
-    return ReactDOM.createPortal(<PreloadModal isError={isError} />, preloadModalRoot);
+    return <Preload />;
   }
   return (
     <>
       <AppHeader />
       <main className={`${styles.main} pl-5 pr-5`}>
-        <DataContext.Provider value={data}>
-          {data && data.length > 0 && (
-          <BurgerIngredients
-            onBurgerIngredientsClick={burgerIngredientsClick}
-          />
-          )}
-          <BurgerConstructor
-            onHandleButtonOrderClick={handleButtonOrderClick}
-          />
-        </DataContext.Provider>
+        <BurgerIngredients />
+        <BurgerConstructor />
       </main>
 
-      <ModalOverlay isModalOverlayOpened={isModalOverlayOpened}>
-        <Modal nameComponentActive={nameComponentActive}>
-          {nameComponentActive === 'BurgerIngredients' ? (
-            <IngredientDetails
-              data={dataForIngredientDetails}
-              isModalOverlayOpened={isModalOverlayOpened}
-            />
-          ) : nameComponentActive === 'BurgerConstructor' ? (
-            <OrderDetails dataOrderDetails={dataOrderDetails} />
-          ) : null}
-        </Modal>
+      <ModalOverlay>
+        {nameComponentActive === 'BurgerIngredients' ? (
+          <Modal title="Детали ингредиента">
+            <IngredientDetails />
+          </Modal>
+        ) : nameComponentActive === 'BurgerConstructor' ? (
+          <Modal title="">
+            <OrderDetails />
+          </Modal>
+        ) : null}
+
       </ModalOverlay>
     </>
   );

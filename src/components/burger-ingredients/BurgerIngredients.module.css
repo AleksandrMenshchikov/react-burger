@@ -15,34 +15,12 @@
   row-gap: 32px;
 }
 
-.listItem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  min-height: 224px;
-}
-
-.listItem__text {
-  text-align: center;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  height: 48px;
-}
-
-.price {
-  display: flex;
-  align-items: center;
-}
-
 .container {
   overflow-y: scroll;
   max-height: calc(100vh - 115px - 40px - 88px);
   scroll-behavior: smooth;
-  scrollbar-width: thin;          /* "auto" или "thin"  */
-  scrollbar-color: #8585AD #1C1C21;
+  scrollbar-width: thin; /* "auto" или "thin"  */
+  scrollbar-color: #8585ad #1c1c21;
 }
 
 .container::-webkit-scrollbar {
@@ -50,22 +28,14 @@
 }
 
 .container::-webkit-scrollbar-track {
-  background: #1C1C21; 
+  background: #1c1c21;
 }
- 
+
 .container::-webkit-scrollbar-thumb {
-  background: #8585AD; 
+  background: #8585ad;
 }
 
 .title {
   padding-top: 40px;
   margin-top: 0;
-}
-
-.burgerIngredients {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  outline: none;
 }

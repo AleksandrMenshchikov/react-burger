@@ -1,4 +1,4 @@
-@import "./vendors/normalize.css";
+@import "../node_modules/normalize.css/normalize.css";
 @import "./fonts/stylesheet.css";
 
 body {
@@ -18,7 +18,6 @@ body #root {
   min-height: 100vh;
   align-items: center;
   color: #f2f2f3;
-  opacity: 0;
   transition: all 1s;
 }
 
