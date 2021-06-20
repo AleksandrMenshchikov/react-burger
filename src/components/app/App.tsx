@@ -11,8 +11,7 @@ import IngredientDetails from '../ingredient-details/IngredientDetails';
 import ModalOverlay from '../modal-overlay/ModalOverlay';
 import stylesModalOverlay from '../modal-overlay/ModalOverlay.module.css';
 import Modal from '../modal/Modal';
-import stylesIngredientDetails from '../ingredient-details/IngredientDetails.module.css';
-import stylesOrderDetails from '../order-details/OrderDetails.module.css';
+import stylesModal from '../modal/Modal.module.css';
 import OrderDetails from '../order-details/OrderDetails';
 import styles from './App.module.css';
 import Preload from '../preload/Preload';
@@ -39,9 +38,8 @@ function App(): JSX.Element {
 
     function closeModalOverlayByButtonClick(e) {
       if (
-        e.target.classList.contains(stylesIngredientDetails.button)
-         || e.target.classList.contains(stylesOrderDetails.button)
-         || e.target.classList.contains(stylesModalOverlay.modalOverlay)
+        e.target.classList.contains(stylesModal.button)
+        || e.target.classList.contains(stylesModalOverlay.modalOverlay)
       ) {
         dispatch(setIsModalOverlayOpened(false));
         let timer;
@@ -74,13 +72,16 @@ function App(): JSX.Element {
       </main>
 
       <ModalOverlay>
-        <Modal>
-          {nameComponentActive === 'BurgerIngredients' ? (
+        {nameComponentActive === 'BurgerIngredients' ? (
+          <Modal title="Детали ингредиента">
             <IngredientDetails />
-          ) : nameComponentActive === 'BurgerConstructor' ? (
+          </Modal>
+        ) : nameComponentActive === 'BurgerConstructor' ? (
+          <Modal title="">
             <OrderDetails />
-          ) : null}
-        </Modal>
+          </Modal>
+        ) : null}
+
       </ModalOverlay>
     </>
   );

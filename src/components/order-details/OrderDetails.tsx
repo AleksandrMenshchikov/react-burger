@@ -8,12 +8,6 @@ function OrderDetails() {
   const { numberOrderDetails } = useSelector((state: RootState) => state.orderDetails);
   return (
     <>
-      <div className={styles.titleContainer}>
-        <h3 className="text text_type_main-large">
-          {' '}
-        </h3>
-        <button type="button" className={styles.button} aria-label="Закрыть" />
-      </div>
       {numberOrderDetails === 'emptyOrder'
         ? <h1 className="text text_type_main-large">Ваш заказ пустой</h1>
         : numberOrderDetails === null

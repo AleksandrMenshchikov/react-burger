@@ -14,12 +14,6 @@ function IngredientDetails() {
   if (dataBurgerIngredient) {
     return (
       <>
-        <div className={styles.titleContainer}>
-          <h3 className="text text_type_main-large">
-            Детали ингредиента
-          </h3>
-          <button type="button" className={styles.button} aria-label="Закрыть" />
-        </div>
         <div className={styles.imgContainer}>
           <img
             src={spinWhite}
