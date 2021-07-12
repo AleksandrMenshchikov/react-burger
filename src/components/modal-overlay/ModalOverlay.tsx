@@ -20,7 +20,7 @@ function ModalOverlay({ children }) {
 }
 
 ModalOverlay.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element,
 };
 
 export default React.memo(ModalOverlay);

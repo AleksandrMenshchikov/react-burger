@@ -1,0 +1,58 @@
+.signIn {
+  width: 100%;
+  max-width: 480px;
+  margin-top: calc(88px + 40px);
+}
+
+.inputContainer {
+  display: grid;
+  row-gap: 24px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.form {
+  width: 100%;
+  margin-bottom: 64px;
+}
+
+.buttonContainer {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.linkContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin: 16px 0 0;
+}
+
+.text {
+  margin: 0;
+  margin-right: 8px;
+}
+
+.link {
+  color: #4c4cff;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.link:hover {
+  opacity: 0.8;
+}
+
+.error {
+  margin: 0 0 2px 24px;
+  color: #e52b1a;
+  display: none;
+}
+
+.error_active {
+  display: block;
+}
