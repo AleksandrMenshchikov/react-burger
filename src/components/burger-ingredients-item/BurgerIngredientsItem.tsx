@@ -34,9 +34,7 @@ function BurgerIngredientsItem({ ingredient }) {
       dispatch(setDataBurgerIngredient(e.currentTarget.id));
       dispatch(setIsModalOverlayOpened(true));
       dispatch(setNameComponentActive('BurgerIngredients'));
-      localStorage.setItem('burgerIngredients', 'modal');
-      localStorage.setItem('idIngredient', e.currentTarget.id);
-      history.replace(`/ingredients/${ingredient._id}`);
+      history.replace(`/ingredients/${ingredient._id}`, false);
     },
     [],
   );

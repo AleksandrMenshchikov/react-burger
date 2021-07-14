@@ -1,7 +1,7 @@
 import { Button, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { RootState } from '../../services/reducers';
 import styles from './SignIn.module.css';
 import { setEmailValue, setPasswordValue, setIsValidForm } from '../../services/actions/signIn';
@@ -21,6 +21,7 @@ function SignIn() {
   const [sign, setSign] = useState(0);
   const formRef = useRef(null);
   const errorRef = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     const listInputElements = [...formRef.current.elements].filter((item) => item.tagName === 'INPUT');
@@ -57,7 +58,11 @@ function SignIn() {
               dispatch(setNameProfileValue(res.user.name));
               dispatch(setEmailValue(''));
               dispatch(setPasswordValue(''));
-              history.push('/profile');
+              if (location.state === 'constructor') {
+                history.replace('/');
+              } else {
+                history.replace('/profile');
+              }
             }
           } else {
             errorRef.current.classList.add(styles.error_active);

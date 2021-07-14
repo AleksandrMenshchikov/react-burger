@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Switch, useLocation } from 'react-router-dom';
 import BurgerConstructor from '../components/burger-constructor/BurgerConstructor';
@@ -16,12 +16,11 @@ function Home(): JSX.Element {
   const { data } = useSelector((state: RootState) => state.ingredients);
   const location = useLocation();
   // const { isLoggedIn } = useSelector((state: RootState) => state.app);
-
   if (data && data.length === 0) {
     return <Preload />;
   }
   if (data && data.length > 0) {
-    if (localStorage.getItem('burgerIngredients') === 'page' && location.pathname.split('/').includes('ingredients')) {
+    if (location.state) {
       return (
         <Switch>
           <Route path="/ingredients/:id">
@@ -40,7 +39,7 @@ function Home(): JSX.Element {
         </main>
 
         <ModalOverlay>
-          {nameComponentActive === 'BurgerIngredients' && localStorage.getItem('burgerIngredients') === 'modal' ? (
+          {nameComponentActive === 'BurgerIngredients' ? (
             <Switch>
               <Route path="/ingredients/:id">
                 <Modal title="Детали ингредиента">

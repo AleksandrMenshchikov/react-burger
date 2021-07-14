@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients, deleteDataBurgerIngredient, setDataBurgerIngredient } from '../../services/actions/ingredients';
 import { setIsModalOverlayOpened } from '../../services/actions/modalOverlay';
 import { deleteNumberOrderDetails } from '../../services/actions/orderDetails';
-import { setIsResetPasswordActive, setIsLoggedIn } from '../../services/actions/app';
+import { setIsResetPasswordActive } from '../../services/actions/app';
 import { RootState } from '../../services/reducers';
 import AppHeader from '../app-header/AppHeader';
 import stylesModalOverlay from '../modal-overlay/ModalOverlay.module.css';
@@ -19,50 +19,13 @@ import ForgotPassword1 from '../../pages/ForgotPassword1';
 import ForgotPassword2 from '../../pages/ForgotPassword2';
 import ProfilePage from '../../pages/ProfilePage';
 import ProtectedRoute from '../protected-route/ProtectedRoute';
-import { getCookie, setCookie } from '../../utils/cookies';
-import { api } from '../../utils/api';
-import { setEmailProfileValue, setNameProfileValue } from '../../services/actions/profile';
 
 function App(): JSX.Element {
-  const { isLoggedIn, isResetPasswordActive } = useSelector((state: RootState) => state.app);
+  const { isResetPasswordActive } = useSelector((state: RootState) => state.app);
   const { data } = useSelector((state: RootState) => state.ingredients);
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-
-  // useEffect(() => {
-  //   const accessToken = getCookie('accessToken');
-  //   if (accessToken) {
-  //     dispatch(setIsLoggedIn(true));
-  //     api.getUser(accessToken)
-  //       .then((res) => {
-  //         if (res.success) {
-  //           dispatch(setEmailProfileValue(res.user.email));
-  //           dispatch(setNameProfileValue(res.user.name));
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   } else {
-  //     const token = localStorage.getItem('refreshToken');
-  //     if (token) {
-  //       api.postRefreshToken(token)
-  //         .then((res) => {
-  //           if (res.success) {
-  //             const authToken = res.accessToken.split('Bearer ')[1];
-  //             const { refreshToken } = res;
-  //             if (authToken) {
-  //               setCookie('accessToken', authToken, { expires: 1200 });
-  //               localStorage.setItem('refreshToken', refreshToken);
-  //               dispatch(setIsLoggedIn(true));
-  //               dispatch(setEmailProfileValue(res.user.email));
-  //               dispatch(setNameProfileValue(res.user.name));
-  //             }
-  //           }
-  //         })
-  //         .catch((err) => console.log(err));
-  //     }
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (isResetPasswordActive) {
@@ -71,25 +34,21 @@ function App(): JSX.Element {
     }
   }, [isResetPasswordActive, history]);
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     dispatch(getIngredients());
-  //   }
-  // }, [isLoggedIn]);
-
   useEffect(() => {
-    localStorage.setItem('burgerIngredients', 'page');
     dispatch(getIngredients());
+    if (location.pathname.split('/').includes('ingredients')) {
+      history.replace(location.pathname, 'ingredients');
+    }
   }, []);
 
   useEffect(() => {
-    if (data) {
-      const idIngredient = localStorage.getItem('idIngredient');
-      if (idIngredient) {
-        dispatch(setDataBurgerIngredient(idIngredient));
+    if (location.state === 'ingredients') {
+      const splitedLocation = location.pathname.split('/');
+      if (data.length > 0) {
+        dispatch(setDataBurgerIngredient(splitedLocation[2]));
       }
     }
-  }, [data]);
+  }, [location, data]);
 
   useEffect(() => {
     function closeModalOverlayByEsc(e) {

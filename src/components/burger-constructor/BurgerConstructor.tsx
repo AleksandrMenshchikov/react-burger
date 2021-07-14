@@ -53,7 +53,7 @@ function BurgerConstructor() {
 
   function handleButtonOrderClick() {
     if (!isLoggedIn) {
-      history.replace('/login');
+      history.replace('/login', 'constructor');
     } else {
       const arrayOfId = data.map((item) => item._id);
       dispatch(getNumberOrderDetails(arrayOfId));
