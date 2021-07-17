@@ -2,6 +2,7 @@ import { Button, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-co
 import React from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { setIngredients } from '../../services/actions/ingredients';
 import { getNumberOrderDetails } from '../../services/actions/orderDetails';
 import { updateTotalPriceToBurgerConstructor } from '../../services/actions/burgerConstructor';
@@ -11,7 +12,9 @@ import styles from './BurgerConstructor.module.css';
 import BurgerConstructorScrolle from '../burger-constructor-scrolle/BurgerConstructorScrolle';
 
 function BurgerConstructor() {
+  const { isLoggedIn } = useSelector((state: RootState) => state.app);
   const dispatch = useDispatch();
+  const history = useHistory();
   const { data, totalPrice } = useSelector((state: RootState) => state.burgerConstructor);
   const { data: dataIngredients } = useSelector((state: RootState) => state.ingredients);
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
@@ -49,8 +52,12 @@ function BurgerConstructor() {
   }, [data]);
 
   function handleButtonOrderClick() {
-    const arrayOfId = data.map((item) => item._id);
-    dispatch(getNumberOrderDetails(arrayOfId));
+    if (!isLoggedIn) {
+      history.push('/login', { order: true });
+    } else {
+      const arrayOfId = data.map((item) => item._id);
+      dispatch(getNumberOrderDetails(arrayOfId));
+    }
   }
 
   return (

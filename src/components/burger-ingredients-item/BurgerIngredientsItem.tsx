@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useDrag } from 'react-dnd';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { setDataBurgerIngredient } from '../../services/actions/ingredients';
 import { setIsModalOverlayOpened, setNameComponentActive } from '../../services/actions/modalOverlay';
 import styles from './BurgerIngredientsItem.module.css';
@@ -10,6 +11,7 @@ import { addIngredientToBurgerConstructor } from '../../services/actions/burgerC
 
 function BurgerIngredientsItem({ ingredient }) {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: 'burgerIngredientsItem',
@@ -32,6 +34,7 @@ function BurgerIngredientsItem({ ingredient }) {
       dispatch(setDataBurgerIngredient(e.currentTarget.id));
       dispatch(setIsModalOverlayOpened(true));
       dispatch(setNameComponentActive('BurgerIngredients'));
+      history.replace(`/ingredients/${ingredient._id}`, { background: true });
     },
     [],
   );

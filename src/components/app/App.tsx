@@ -1,32 +1,95 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import {
+  Route, Switch, useHistory, useLocation, useRouteMatch,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngredients, deleteDataBurgerIngredient } from '../../services/actions/ingredients';
+import { getIngredients, deleteDataBurgerIngredient, setDataBurgerIngredient } from '../../services/actions/ingredients';
 import { setIsModalOverlayOpened } from '../../services/actions/modalOverlay';
 import { deleteNumberOrderDetails } from '../../services/actions/orderDetails';
+import { setIsLoggedIn, setIsResetPasswordActive } from '../../services/actions/app';
 import { RootState } from '../../services/reducers';
 import AppHeader from '../app-header/AppHeader';
-import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
-import ModalOverlay from '../modal-overlay/ModalOverlay';
 import stylesModalOverlay from '../modal-overlay/ModalOverlay.module.css';
-import Modal from '../modal/Modal';
 import stylesModal from '../modal/Modal.module.css';
-import OrderDetails from '../order-details/OrderDetails';
-import styles from './App.module.css';
-import Preload from '../preload/Preload';
+import Home from '../../pages/Home';
+import NotFound from '../not-found/NotFound';
+import Login from '../../pages/Login';
+import Register from '../../pages/Register';
+import ForgotPassword1 from '../../pages/ForgotPassword1';
+import ForgotPassword2 from '../../pages/ForgotPassword2';
+import ProfilePage from '../../pages/ProfilePage';
+import ProtectedRoute from '../protected-route/ProtectedRoute';
+import { api } from '../../utils/api';
+import { getCookie, setCookie } from '../../utils/cookies';
+import { setEmailProfileValue, setNameProfileValue } from '../../services/actions/profile';
 
 function App(): JSX.Element {
+  const { isResetPasswordActive } = useSelector((state: RootState) => state.app);
   const { data } = useSelector((state: RootState) => state.ingredients);
-  const { nameComponentActive } = useSelector((state: RootState) => state.modalOverlay);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  const match = useRouteMatch('/ingredients/:id');
 
-  React.useEffect(() => {
+  useEffect(() => {
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      dispatch(setIsLoggedIn(true));
+      api.getUser(accessToken)
+        .then((res) => {
+          if (res.success) {
+            dispatch(setEmailProfileValue(res.user.email));
+            dispatch(setNameProfileValue(res.user.name));
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      const token = localStorage.getItem('refreshToken');
+      if (token) {
+        api.postRefreshToken(token)
+          .then((res) => {
+            if (res.success) {
+              const authToken = res.accessToken.split('Bearer ')[1];
+              const { refreshToken } = res;
+              if (authToken) {
+                setCookie('accessToken', authToken, { expires: 1200 });
+                localStorage.setItem('refreshToken', refreshToken);
+                dispatch(setIsLoggedIn(true));
+                dispatch(setEmailProfileValue(res.user.email));
+                dispatch(setNameProfileValue(res.user.name));
+              }
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isResetPasswordActive) {
+      history.push('/reset-password');
+      dispatch(setIsResetPasswordActive(false));
+    }
+  }, [isResetPasswordActive, history]);
+
+  useEffect(() => {
     dispatch(getIngredients());
+    history.replace(location.pathname, { background: false });
+  }, []);
 
+  useEffect(() => {
+    if (data.length > 0 && match && match.isExact) {
+      const { params } = match;
+      const id = (params as any)?.id;
+      dispatch(setDataBurgerIngredient(id));
+    }
+  }, [data]);
+
+  useEffect(() => {
     function closeModalOverlayByEsc(e) {
       if (e.key === 'Escape') {
         dispatch(setIsModalOverlayOpened(false));
+        history.replace('/');
         let timer;
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -42,6 +105,7 @@ function App(): JSX.Element {
         || e.target.classList.contains(stylesModalOverlay.modalOverlay)
       ) {
         dispatch(setIsModalOverlayOpened(false));
+        history.replace('/');
         let timer;
         clearTimeout(timer);
         timer = setTimeout(() => {
@@ -60,29 +124,40 @@ function App(): JSX.Element {
     };
   }, []);
 
-  if (data && data.length === 0) {
-    return <Preload />;
-  }
   return (
     <>
       <AppHeader />
-      <main className={`${styles.main} pl-5 pr-5`}>
-        <BurgerIngredients />
-        <BurgerConstructor />
-      </main>
-
-      <ModalOverlay>
-        {nameComponentActive === 'BurgerIngredients' ? (
-          <Modal title="Детали ингредиента">
-            <IngredientDetails />
-          </Modal>
-        ) : nameComponentActive === 'BurgerConstructor' ? (
-          <Modal title="">
-            <OrderDetails />
-          </Modal>
-        ) : null}
-
-      </ModalOverlay>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route exact path="/ingredients/:id">
+          <Home />
+        </Route>
+        <Route path="/login">
+          <Login />
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+        <Route path="/forgot-password">
+          <ForgotPassword1 />
+        </Route>
+        <Route path="/reset-password">
+          <ForgotPassword2 />
+        </Route>
+        <ProtectedRoute
+          component={ProfilePage}
+          path="/profile"
+          pathToRedirect={{
+            pathname: '/login',
+            state: { profile: true },
+          }}
+        />
+        <Route path="*">
+          <NotFound />
+        </Route>
+      </Switch>
     </>
   );
 }

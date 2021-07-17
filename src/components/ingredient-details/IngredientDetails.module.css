@@ -34,3 +34,7 @@
   margin: 0;
   padding-bottom: 8px;
 }
+
+.name {
+  text-align: center;
+}
