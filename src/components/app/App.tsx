@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import {
-  Route, Switch, useHistory, useLocation,
+  Route, Switch, useHistory, useLocation, useRouteMatch,
 } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngredients, deleteDataBurgerIngredient, setDataBurgerIngredient } from '../../services/actions/ingredients';
 import { setIsModalOverlayOpened } from '../../services/actions/modalOverlay';
 import { deleteNumberOrderDetails } from '../../services/actions/orderDetails';
-import { setIsResetPasswordActive } from '../../services/actions/app';
+import { setIsLoggedIn, setIsResetPasswordActive } from '../../services/actions/app';
 import { RootState } from '../../services/reducers';
 import AppHeader from '../app-header/AppHeader';
 import stylesModalOverlay from '../modal-overlay/ModalOverlay.module.css';
@@ -19,6 +19,9 @@ import ForgotPassword1 from '../../pages/ForgotPassword1';
 import ForgotPassword2 from '../../pages/ForgotPassword2';
 import ProfilePage from '../../pages/ProfilePage';
 import ProtectedRoute from '../protected-route/ProtectedRoute';
+import { api } from '../../utils/api';
+import { getCookie, setCookie } from '../../utils/cookies';
+import { setEmailProfileValue, setNameProfileValue } from '../../services/actions/profile';
 
 function App(): JSX.Element {
   const { isResetPasswordActive } = useSelector((state: RootState) => state.app);
@@ -26,6 +29,41 @@ function App(): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const match = useRouteMatch('/ingredients/:id');
+
+  useEffect(() => {
+    const accessToken = getCookie('accessToken');
+    if (accessToken) {
+      dispatch(setIsLoggedIn(true));
+      api.getUser(accessToken)
+        .then((res) => {
+          if (res.success) {
+            dispatch(setEmailProfileValue(res.user.email));
+            dispatch(setNameProfileValue(res.user.name));
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      const token = localStorage.getItem('refreshToken');
+      if (token) {
+        api.postRefreshToken(token)
+          .then((res) => {
+            if (res.success) {
+              const authToken = res.accessToken.split('Bearer ')[1];
+              const { refreshToken } = res;
+              if (authToken) {
+                setCookie('accessToken', authToken, { expires: 1200 });
+                localStorage.setItem('refreshToken', refreshToken);
+                dispatch(setIsLoggedIn(true));
+                dispatch(setEmailProfileValue(res.user.email));
+                dispatch(setNameProfileValue(res.user.name));
+              }
+            }
+          })
+          .catch((err) => console.log(err));
+      }
+    }
+  }, []);
 
   useEffect(() => {
     if (isResetPasswordActive) {
@@ -36,19 +74,16 @@ function App(): JSX.Element {
 
   useEffect(() => {
     dispatch(getIngredients());
-    if (location.pathname.split('/').includes('ingredients')) {
-      history.replace(location.pathname, 'ingredients');
-    }
+    history.replace(location.pathname, { background: false });
   }, []);
 
   useEffect(() => {
-    if (location.state === 'ingredients') {
-      const splitedLocation = location.pathname.split('/');
-      if (data.length > 0) {
-        dispatch(setDataBurgerIngredient(splitedLocation[2]));
-      }
+    if (data.length > 0 && match && match.isExact) {
+      const { params } = match;
+      const id = (params as any)?.id;
+      dispatch(setDataBurgerIngredient(id));
     }
-  }, [location, data]);
+  }, [data]);
 
   useEffect(() => {
     function closeModalOverlayByEsc(e) {
@@ -111,7 +146,14 @@ function App(): JSX.Element {
         <Route path="/reset-password">
           <ForgotPassword2 />
         </Route>
-        <ProtectedRoute component={ProfilePage} path="/profile" pathToRedirect="/login" />
+        <ProtectedRoute
+          component={ProfilePage}
+          path="/profile"
+          pathToRedirect={{
+            pathname: '/login',
+            state: { profile: true },
+          }}
+        />
         <Route path="*">
           <NotFound />
         </Route>

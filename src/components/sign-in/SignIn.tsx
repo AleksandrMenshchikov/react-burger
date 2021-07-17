@@ -51,6 +51,16 @@ function SignIn() {
             const authToken = res.accessToken.split('Bearer ')[1];
             const { refreshToken } = res;
             if (authToken) {
+              const { state } = location;
+              const order = (state as any)?.order;
+              const profile = (state as any)?.profile;
+              if (order) {
+                history.goBack();
+              } else if (profile) {
+                history.push('/profile');
+              } else {
+                history.push('/');
+              }
               setCookie('accessToken', authToken, { expires: 1200 });
               localStorage.setItem('refreshToken', refreshToken);
               dispatch(setIsLoggedIn(true));
@@ -58,11 +68,6 @@ function SignIn() {
               dispatch(setNameProfileValue(res.user.name));
               dispatch(setEmailValue(''));
               dispatch(setPasswordValue(''));
-              if (location.state === 'constructor') {
-                history.replace('/');
-              } else {
-                history.replace('/profile');
-              }
             }
           } else {
             errorRef.current.classList.add(styles.error_active);

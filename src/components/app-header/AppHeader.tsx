@@ -4,7 +4,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useRouteMatch } from 'react-router-dom';
 import styles from './AppHeader.module.css';
 
 function AppHeader() {
@@ -180,7 +180,9 @@ function AppHeader() {
           </li>
           <li className={`${styles.listItem} ${styles.listItem_profile}`}>
             <NavLink
-              to="/profile"
+              to={{
+                pathname: '/profile',
+              }}
               className={`${styles.navLink} pl-5 pr-5 pt-4 pb-4`}
               onMouseOver={handleProfileLinkMouseOver}
               onMouseLeave={handleProfileLinkMouseLeave}

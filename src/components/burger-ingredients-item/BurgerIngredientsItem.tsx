@@ -34,7 +34,7 @@ function BurgerIngredientsItem({ ingredient }) {
       dispatch(setDataBurgerIngredient(e.currentTarget.id));
       dispatch(setIsModalOverlayOpened(true));
       dispatch(setNameComponentActive('BurgerIngredients'));
-      history.replace(`/ingredients/${ingredient._id}`, false);
+      history.replace(`/ingredients/${ingredient._id}`, { background: true });
     },
     [],
   );

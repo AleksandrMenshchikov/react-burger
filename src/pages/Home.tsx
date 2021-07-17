@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Route, Switch, useLocation } from 'react-router-dom';
+import {
+  Route, Switch, useLocation, useRouteMatch,
+} from 'react-router-dom';
 import BurgerConstructor from '../components/burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../components/burger-ingredients/BurgerIngredients';
 import IngredientDetails from '../components/ingredient-details/IngredientDetails';
@@ -15,12 +17,15 @@ function Home(): JSX.Element {
   const { nameComponentActive } = useSelector((state: RootState) => state.modalOverlay);
   const { data } = useSelector((state: RootState) => state.ingredients);
   const location = useLocation();
-  // const { isLoggedIn } = useSelector((state: RootState) => state.app);
+  const match = useRouteMatch('/ingredients/:id');
+
   if (data && data.length === 0) {
     return <Preload />;
   }
   if (data && data.length > 0) {
-    if (location.state) {
+    const { state } = location;
+    const background = (state as any)?.background;
+    if (!background && match && match.isExact) {
       return (
         <Switch>
           <Route path="/ingredients/:id">
