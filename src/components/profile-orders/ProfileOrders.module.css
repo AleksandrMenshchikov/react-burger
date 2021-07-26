@@ -1,0 +1,113 @@
+.container {
+  height: 350px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.innerContainer {
+  margin-left: 60px;
+  overflow-y: scroll;
+  max-height: calc(100vh - 40px - 88px);
+  scroll-behavior: smooth;
+  scrollbar-width: thin; /* "auto" или "thin"  */
+  scrollbar-color: #8585ad #1c1c21;
+}
+
+.innerContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.innerContainer::-webkit-scrollbar-track {
+  background: #1c1c21;
+}
+
+.innerContainer::-webkit-scrollbar-thumb {
+  background: #8585ad;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  row-gap: 16px;
+}
+
+.listItem {
+  background: #1c1c21;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 2px rgba(0, 0, 0, 0.06),
+    0px 0px 1px rgba(0, 0, 0, 0.04);
+  border-radius: 40px;
+  padding: 24px;
+  margin-right: 8px;
+  cursor: pointer;
+  border: none;
+  color: inherit;
+}
+
+.listItemTop {
+  display: flex;
+  justify-content: space-between;
+}
+
+.listItemCenter {
+  padding-top: 24px;
+  padding-bottom: 8px;
+  text-align: left;
+}
+
+.listItemBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.listItemImages {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.listItemImageContainer {
+  margin-right: -16px;
+  margin-top: 10px;
+  background-image: url(../../images/ingredient.svg);
+  background-color: #1c1c21;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.listItemImage {
+  width: 60px;
+  height: 60px;
+  border-radius: 50px;
+  object-position: center;
+  object-fit: cover;
+  position: relative;
+}
+
+.listItemPrice {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  column-gap: 8px;
+  margin-left: 32px;
+}
+
+.done {
+  color: #00cccc;
+  margin: 0 0 8px 0;
+  display: block;
+  text-align: left;
+}
+
+.make {
+  margin: 0 0 8px 0;
+  display: block;
+  text-align: left;
+}
+

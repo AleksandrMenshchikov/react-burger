@@ -57,7 +57,7 @@ function SignUp() {
             const authToken = res.accessToken.split('Bearer ')[1];
             const { refreshToken } = res;
             if (authToken) {
-              setCookie('accessToken', authToken, null);
+              setCookie('accessToken', authToken, { path: '/', expires: 1200 });
               localStorage.setItem('refreshToken', refreshToken);
               history.push('/login');
             }

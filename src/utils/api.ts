@@ -24,11 +24,20 @@ class Api {
     }).then(this._handleResponse);
   }
 
-  postOrders(idAllIngredients: string[]) {
+  postOrders(idAllIngredients: string[], token) {
     return fetch(`${this._baseUrl}/orders`, {
       method: 'POST',
-      headers: this._headers(),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ ingredients: idAllIngredients }),
+    }).then(this._handleResponse);
+  }
+
+  getOrdersAll() {
+    return fetch(`${this._baseUrl}/orders/all`, {
+      headers: this._headers(),
     }).then(this._handleResponse);
   }
 

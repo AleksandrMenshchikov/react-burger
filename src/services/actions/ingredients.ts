@@ -5,6 +5,7 @@ import {
   DELETE_DATA_BURGER_INGREDIENT,
 } from '../constants/actionTypes';
 import { api } from '../../utils/api';
+// import { setData, setIsErrorDataOrdersAll } from './ordersAll';
 
 export const setIngredients = (data) => ({
   type: GET_INGREDIENTS,
@@ -27,7 +28,39 @@ export const deleteDataBurgerIngredient = () => ({
 
 export const getIngredients = () => (dispatch) => {
   api.getIngredients()
-    .then((res) => dispatch(setIngredients(res.data)))
+    .then((res) => {
+      dispatch(setIngredients(res.data));
+
+      // api.getOrdersAll()
+      //   .then((response) => {
+      //     const formatedData = {
+      //       ...response,
+      //       orders: response.orders.map((order) => {
+      //         let counter = 0;
+      //         return {
+      //           ...order,
+      //           ingredients: order.ingredients
+      //             .map((ingredient) => res.data
+      //               .filter((item) => {
+      //                 if (item._id === ingredient) {
+      //                   counter += item.price;
+      //                   return true;
+      //                 }
+      //                 return false;
+      //               })[0].image_mobile),
+      //           totalPrice: counter,
+      //           createdAt: new Date(order.createdAt).toLocaleString(),
+      //           updatedAt: new Date(order.createdAt).toLocaleString(),
+      //         };
+      //       }),
+      //     };
+      //     dispatch(setData(formatedData));
+      //   })
+      //   .catch((err) => {
+      //     dispatch(setIsErrorDataOrdersAll(true));
+      //     console.error(err);
+      //   });
+    })
     .catch((err) => {
       dispatch(setIsErrorData(true));
       console.error(err);

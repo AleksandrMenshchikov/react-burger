@@ -2,7 +2,9 @@ import {
   Button, EmailInput, Input, PasswordInput,
 } from '@ya.praktikum/react-developer-burger-ui-components';
 import React, { useEffect, useRef, useState } from 'react';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import {
+  NavLink, Route, useHistory, useLocation, useRouteMatch,
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from './Profile.module.css';
 import {
@@ -13,8 +15,14 @@ import { RootState } from '../../services/reducers';
 import { api } from '../../utils/api';
 import { deleteCookie, getCookie } from '../../utils/cookies';
 import { setIsLoggedIn } from '../../services/actions/app';
+import ProfileOrders from '../profile-orders/ProfileOrders';
+import OrderTapeDetails from '../order-tape-details/OrderTapeDetails';
+import Preload from '../preload/Preload';
+import { setDataOrdersTapeDetails } from '../../services/actions/ordersTape';
 
 function Profile() {
+  const { messages } = useSelector((state: RootState) => state.ws2);
+  const data = messages[messages.length - 1];
   const {
     name, email, password, isValidForm, isLoading,
   } = useSelector((state: RootState) => state.profile);
@@ -24,6 +32,20 @@ function Profile() {
   const [sign, setSign] = useState(0);
   const formRef = useRef(null);
   const errorRef = useRef(null);
+  const match = useRouteMatch('/profile/orders');
+  const match2 = useRouteMatch('/profile/orders/:id');
+
+  const { state } = location;
+  const background = (state as any)?.background;
+
+  useEffect(() => {
+    if (!background && match2 && match2.isExact && data) {
+      const { params } = match2;
+      const id = (params as any)?.id;
+      dispatch(setDataOrdersTapeDetails(data.orders
+        .filter((item) => item._id === id)));
+    }
+  }, [data]);
 
   useEffect(() => {
     if (sign > 0) {
@@ -71,25 +93,23 @@ function Profile() {
     }
   }, [isValidForm]);
 
-  useEffect(() => {
-    if (location.pathname === '/profile/logout') {
-      const token = localStorage.getItem('refreshToken');
-      if (token) {
-        api.postLogout(token)
-          .then((res) => {
-            if (res.success) {
-              deleteCookie('accessToken');
-              localStorage.removeItem('refreshToken');
-              dispatch(setIsLoggedIn(false));
-              dispatch(setEmailProfileValue(''));
-              dispatch(setNameProfileValue(''));
-              history.push('/login');
-            }
-          })
-          .catch((err) => console.log(err));
-      }
+  function handleButtonClick() {
+    const token = localStorage.getItem('refreshToken');
+    if (token) {
+      api.postLogout(token)
+        .then((res) => {
+          if (res.success) {
+            deleteCookie('accessToken');
+            localStorage.removeItem('refreshToken');
+            dispatch(setIsLoggedIn(false));
+            dispatch(setEmailProfileValue(''));
+            dispatch(setNameProfileValue(''));
+            history.push('/login');
+          }
+        })
+        .catch((err) => console.log(err));
     }
-  }, [location]);
+  }
 
   function handleNameChange(e) {
     dispatch(setNameProfileValue(e.target.value));
@@ -110,6 +130,22 @@ function Profile() {
     setSign((prevValue) => prevValue + 1);
   }
 
+  if (messages && messages.length === 0 && match2 && match2.isExact) {
+    return (
+      <Preload />
+    );
+  }
+
+  if (!background && match2 && match2.isExact && data) {
+    return (
+      <Route path="/profile/orders/:id">
+        <div style={{ marginTop: '180px' }}>
+          <OrderTapeDetails />
+        </div>
+      </Route>
+    );
+  }
+
   return (
     <div className={styles.profile}>
       <div className={styles.navContainer}>
@@ -117,7 +153,7 @@ function Profile() {
           <ul className={styles.nav__list}>
             <NavLink to="/profile" exact className={`${styles.nav__item} text text_type_main-medium text_color_inactive`} activeClassName={styles.nav__item_active}>Профиль</NavLink>
             <NavLink to="/profile/orders" className={`${styles.nav__item} text text_type_main-medium text_color_inactive`} activeClassName={styles.nav__item_active}>История заказов</NavLink>
-            <NavLink to="/profile/logout" className={`${styles.nav__item} text text_type_main-medium text_color_inactive`} activeClassName={styles.nav__item_active}>Выход</NavLink>
+            <button onClick={handleButtonClick} type="button" className={`${styles.button} text text_type_main-medium text_color_inactive`}>Выход</button>
           </ul>
         </nav>
         <p className={`${styles.nav__text} text text_type_main-default text_color_inactive`}>
@@ -125,25 +161,28 @@ function Profile() {
           изменить свои персональные данные
         </p>
       </div>
-      <form className={styles.form} onSubmit={handleFormSubmit} ref={formRef}>
-        <Input
-          type="text"
-          placeholder="Имя"
-          onChange={handleNameChange}
-          value={name}
-          icon="EditIcon"
-          name="name"
-          error={false}
-          errorText="Ошибка"
-          size="default"
-        />
-        <EmailInput onChange={handleEmailChange} value={email} name="email" />
-        <p ref={errorRef} className={`${styles.error} text_type_main-default`}>Пользователь с таким email уже существует, укажите другой</p>
-        <PasswordInput onChange={handlePasswordChange} value={password} name="password" />
-        <div className={styles.buttonContainer}>
-          <Button type="primary" size="medium">{isLoading ? 'Загрузка данных' : 'Сохранить'}</Button>
-        </div>
-      </form>
+      {(match && match.isExact) || (match2 && match2.isExact) ? <ProfileOrders /> : (
+        <form className={styles.form} onSubmit={handleFormSubmit} ref={formRef}>
+          <Input
+            type="text"
+            placeholder="Имя"
+            onChange={handleNameChange}
+            value={name}
+            icon="EditIcon"
+            name="name"
+            error={false}
+            errorText="Ошибка"
+            size="default"
+          />
+          <EmailInput onChange={handleEmailChange} value={email} name="email" />
+          <p ref={errorRef} className={`${styles.error} text_type_main-default`}>Пользователь с таким email уже существует, укажите другой</p>
+          <PasswordInput onChange={handlePasswordChange} value={password} name="password" />
+          <div className={styles.buttonContainer}>
+            <Button type="primary" size="medium">{isLoading ? 'Загрузка данных' : 'Сохранить'}</Button>
+          </div>
+        </form>
+      )}
+
     </div>
   );
 }
