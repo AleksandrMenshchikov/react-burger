@@ -23,6 +23,7 @@ import { api } from '../../utils/api';
 import { getCookie, setCookie } from '../../utils/cookies';
 import { setEmailProfileValue, setNameProfileValue } from '../../services/actions/profile';
 import OrderTapePage from '../../pages/OrderTapePage';
+import { WS_CONNECTION_START, WS_CONNECTION_START_2 } from '../../services/constants/actionTypes';
 
 function App(): JSX.Element {
   const { isResetPasswordActive } = useSelector((state: RootState) => state.app);
@@ -59,7 +60,7 @@ function App(): JSX.Element {
           if (res.success) {
             dispatch(setEmailProfileValue(res.user.email));
             dispatch(setNameProfileValue(res.user.name));
-            dispatch({ type: 'WS_CONNECTION_START_2', payload: accessToken });
+            dispatch({ type: WS_CONNECTION_START_2, payload: accessToken });
           }
         })
         .catch((err) => console.log(err));
@@ -77,7 +78,7 @@ function App(): JSX.Element {
                 dispatch(setIsLoggedIn(true));
                 dispatch(setEmailProfileValue(res.user.email));
                 dispatch(setNameProfileValue(res.user.name));
-                dispatch({ type: 'WS_CONNECTION_START_2', payload: authToken });
+                dispatch({ type: WS_CONNECTION_START_2, payload: authToken });
               }
             }
           })
@@ -106,7 +107,7 @@ function App(): JSX.Element {
     }
 
     if (data && data.length > 0) {
-      dispatch({ type: 'WS_CONNECTION_START' });
+      dispatch({ type: WS_CONNECTION_START });
     }
   }, [data]);
 

@@ -82,6 +82,14 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+  position: relative;
+}
+
+.counter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%)
 }
 
 .listItemImage {

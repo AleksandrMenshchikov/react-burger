@@ -6,37 +6,21 @@ import styles from './OrderTapeDetails.module.css';
 import stone from '../../images/stone.svg';
 
 function OrderTapeDetails() {
-  const { data: oldData } = useSelector((state: RootState) => state.ordersTape);
+  const { data } = useSelector((state: RootState) => state.ordersTape);
 
-  if (oldData && oldData.length > 0) {
-    const data = {
-      ...oldData[0],
-      ingredients: oldData[0].ingredients.reduce((acc, item) => {
-        let amount = 0;
-        oldData[0].ingredients.forEach((ingredient) => {
-          if (ingredient._id === item._id) {
-            amount += 1;
-          }
-        });
-        if (!acc.find((elem) => elem._id === item._id)) {
-          return [...acc, { ...item, amount }];
-        }
-        return acc;
-      }, []),
-    };
-
+  if (data && data.length > 0) {
     return (
       <div className={styles.container}>
         <span className={`${styles.number} text text_type_digits-default`}>
           #
-          {data.number}
+          {data[0].number}
         </span>
-        <p className={`${styles.title} text text_type_main-medium`}>{data.name}</p>
-        <p className={`${styles.subtitle} text text_type_main-default`}>{data.status === 'done' ? 'Выполнен' : 'В работе'}</p>
+        <p className={`${styles.title} text text_type_main-medium`}>{data[0].name}</p>
+        <p className={`${styles.subtitle} text text_type_main-default`}>{data[0].status === 'done' ? 'Выполнен' : 'В работе'}</p>
         <p className={`${styles.title} text text_type_main-medium`}>Состав:</p>
         <div className={styles.innerContainer}>
           <ul className={styles.list}>
-            {data.ingredients.map((ingredient) => (
+            {data[0].ingredients.map((ingredient) => (
               <div key={uuidv4()} className={styles.ingredient}>
                 <div
                   className={styles.listItemImageContainer}
@@ -59,9 +43,9 @@ function OrderTapeDetails() {
           </ul>
         </div>
         <div className={styles.total}>
-          <span className="text text_type_main-default text_color_inactive">{data.createdAt}</span>
+          <span className="text text_type_main-default text_color_inactive">{data[0].createdAt}</span>
           <span className={`${styles.total} text text_type_digits-default`}>
-            {new Intl.NumberFormat('ru').format(data.totalPrice)}
+            {new Intl.NumberFormat('ru').format(data[0].totalPrice)}
             {' '}
             <img className={styles.img} src={stone} alt="Камень" />
           </span>

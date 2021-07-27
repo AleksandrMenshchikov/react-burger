@@ -1,5 +1,6 @@
 .profile {
-  margin-top: calc(40px + 88px);
+  align-items: center;
+  height: 100vh;
   width: 100%;
   max-width: 1240px;
   display: flex;

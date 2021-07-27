@@ -63,7 +63,7 @@ function ProfileOrders() {
     <>
       <div className={styles.innerContainer}>
         <ul className={styles.list}>
-          {data && data.orders.sort((a, b) => b.number - a.number).map((order) => (
+          {data && data.orders.sort((a, b) => b.number - a.number).slice(0, 10).map((order) => (
             <button
               type="button"
               className={styles.listItem}
@@ -92,6 +92,9 @@ function ProfileOrders() {
                       style={{ zIndex: 10000 - index }}
                     >
                       <img className={styles.listItemImage} src={item.image_mobile} alt="Фото ингредиента" />
+                      <span className={`${styles.counter} text text_type_main-default`}>
+                        {item.amount > 1 && item._id !== '60d3b41abdacab0026a733c6' && item._id !== '60d3b41abdacab0026a733c7' && `+${item.amount}`}
+                      </span>
                     </div>
                   ))}
                 </div>

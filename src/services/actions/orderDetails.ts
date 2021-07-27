@@ -16,7 +16,8 @@ export const deleteNumberOrderDetails = () => ({
 export const getNumberOrderDetails = (arrayOfId) => (dispatch, getState) => {
   dispatch(setIsModalOverlayOpened(true));
   dispatch(setNameComponentActive('BurgerConstructor'));
-  if (getState().burgerConstructor.data.length > 0) {
+  if (getState().burgerConstructor.data.length > 0
+  && (arrayOfId.includes('60d3b41abdacab0026a733c6') || arrayOfId.includes('60d3b41abdacab0026a733c7'))) {
     const accessToken = getCookie('accessToken');
     api.postOrders(arrayOfId, accessToken)
       .then((res) => {

@@ -7,7 +7,9 @@ import {
 
 function formattedData(response, dataIngredients) {
   return {
-    ...response,
+    total: response.total,
+    totalToday: response.totalToday,
+    ...response[response.length - 1],
     orders: response.orders.map((order) => {
       let counter = 0;
       let counter2 = 0;
@@ -29,7 +31,18 @@ function formattedData(response, dataIngredients) {
                 return true;
               }
               return false;
-            })[0]),
+            })[0]).reduce((acc, item, index, arr) => {
+            let amount = 0;
+            arr.forEach((ingredient) => {
+              if (ingredient._id === item._id) {
+                amount += 1;
+              }
+            });
+            if (!acc.find((elem) => elem._id === item._id)) {
+              return [...acc, { ...item, amount }];
+            }
+            return acc;
+          }, []),
         totalPrice: counter,
         createdAt: new Date(order.createdAt).toLocaleString(),
         updatedAt: new Date(order.createdAt).toLocaleString(),

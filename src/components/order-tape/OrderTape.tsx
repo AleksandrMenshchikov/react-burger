@@ -65,7 +65,7 @@ function OrderTape() {
           </h2>
           <div className={styles.innerContainer}>
             <ul className={styles.list}>
-              {data && data.orders.map((order) => (
+              {data && data.orders.slice(0, 10).map((order) => (
                 <button
                   type="button"
                   className={styles.listItem}
@@ -90,6 +90,9 @@ function OrderTape() {
                           style={{ zIndex: 10000 - index }}
                         >
                           <img className={styles.listItemImage} src={item.image_mobile} alt="Фото ингредиента" />
+                          <span className={`${styles.counter} text text_type_main-default`}>
+                            {item.amount > 1 && item._id !== '60d3b41abdacab0026a733c6' && item._id !== '60d3b41abdacab0026a733c7' && `+${item.amount}`}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -109,7 +112,7 @@ function OrderTape() {
             <div>
               <p className="text text_type_main-medium">Готовы:</p>
               <div className={styles.statsTopNumbers}>
-                {data && data.orders.map((order) => (
+                {data && data.orders.slice(0, 10).map((order) => (
                   order.status === 'done'
                     ? <span key={order._id} className={`${styles.statsTopLeftNumbersItem} text text_type_digits-default`}>{order.number}</span>
                     : null
