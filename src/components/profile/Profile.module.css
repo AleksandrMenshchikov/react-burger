@@ -1,11 +1,13 @@
 .profile {
-  margin-top: calc(120px + 88px);
+  align-items: center;
+  height: 100vh;
   width: 100%;
   max-width: 1240px;
   display: flex;
 }
 
 .navContainer {
+  margin-top: 80px;
   max-width: 320px;
   width: 100%;
 }
@@ -39,6 +41,7 @@
 }
 
 .form {
+  margin-top: 80px;
   margin-left: 60px;
   max-width: 480px;
   width: 100%;
@@ -60,4 +63,15 @@
 
 .error_active {
   display: block;
+}
+
+.button {
+  border: none;
+  background-color: transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: #f2f2f3;
 }

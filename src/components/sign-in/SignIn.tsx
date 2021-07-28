@@ -61,7 +61,7 @@ function SignIn() {
               } else {
                 history.push('/');
               }
-              setCookie('accessToken', authToken, { expires: 1200 });
+              setCookie('accessToken', authToken, { path: '/', expires: 1200 });
               localStorage.setItem('refreshToken', refreshToken);
               dispatch(setIsLoggedIn(true));
               dispatch(setEmailProfileValue(res.user.email));

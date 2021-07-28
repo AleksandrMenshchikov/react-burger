@@ -9,7 +9,7 @@ function OrderDetails() {
   return (
     <>
       {numberOrderDetails === 'emptyOrder'
-        ? <h1 className="text text_type_main-large">Ваш заказ пустой</h1>
+        ? <h1 className="text text_type_main-large">Бургер без булки — невозможно</h1>
         : numberOrderDetails === null
           ? (
             <div className={styles.imgContainer}>

@@ -4,24 +4,23 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './components/app/App';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { rootReducer } from './services/reducers/index';
+import { socketMiddleware } from './services/middleware/socketMiddleware';
+import { socketMiddleware2 } from './services/middleware/socketMiddleware2';
 
-declare global {
-    interface Window {
-      __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-    }
-}
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ as typeof compose || compose;
-
-const enhancer = composeEnhancers(applyMiddleware(thunk));
-
-const store = createStore(rootReducer, enhancer);
+const store = createStore(rootReducer, composeWithDevTools(
+  applyMiddleware(
+    thunk,
+    socketMiddleware('wss://norma.nomoreparties.space/orders/all'),
+    socketMiddleware2('wss://norma.nomoreparties.space/orders'),
+  ),
+));
 
 ReactDOM.render(
   <React.StrictMode>

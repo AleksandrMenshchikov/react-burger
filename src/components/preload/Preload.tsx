@@ -6,6 +6,7 @@ import { RootState } from '../../services/reducers';
 
 function Preload(): JSX.Element {
   const { isErrorData } = useSelector((state: RootState) => state.ingredients);
+
   return (
     <div
       className={styles.container}

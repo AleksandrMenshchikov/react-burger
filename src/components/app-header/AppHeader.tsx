@@ -1,21 +1,42 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BurgerIcon,
   ListIcon,
   ProfileIcon,
 } from '@ya.praktikum/react-developer-burger-ui-components';
-import { NavLink, useRouteMatch } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import styles from './AppHeader.module.css';
 
 function AppHeader() {
+  const location = useLocation();
   const [state, setState] = React.useState({
     isConstructorLinkHover: false,
-    isConstructorLinkActive: true,
+    isConstructorLinkActive: false,
     isOrderLinkHover: false,
     isOrderLinkActive: false,
     isProfileLinkHover: false,
     isProfileLinkActive: false,
   });
+
+  useEffect(() => {
+    const splitPath = location.pathname.split('/');
+    if (splitPath.includes('feed')) {
+      setState(() => ({
+        ...state,
+        isOrderLinkActive: true,
+      }));
+    } else if ((splitPath.includes('profile'))) {
+      setState(() => ({
+        ...state,
+        isProfileLinkActive: true,
+      }));
+    } else {
+      setState(() => ({
+        ...state,
+        isConstructorLinkActive: true,
+      }));
+    }
+  }, []);
 
   function handleConstructorLinkMouseOver() {
     setState({
